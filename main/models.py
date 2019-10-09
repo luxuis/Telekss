@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
-# Create your models here.
+# La BDD est encore la même que celle de l'année dernière donc on peut la changer si c'est nécessaire
 
 class food(models.Model):
     name = models.CharField(max_length = 100)
