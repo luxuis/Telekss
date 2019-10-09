@@ -17,7 +17,7 @@ class drinks(models.Model):
     name = models.CharField(max_length = 50)
     container_size = models.IntegerField()
     threshold = models.IntegerField()
-    by_bottle = models.IntegerField()
+    by_bottle = models.BooleanField()
     is_champagne = models.BooleanField()
 
     class Meta:
@@ -46,11 +46,11 @@ class stocks(models.Model):
     consommation = models.IntegerField()
 
     class Meta:
-        verbose_name = "rooms"
+        verbose_name = "stocks"
         ordering = ['room','drink']
 
     def __str__(self):
-        return str(self.room)+str(self.drink)
+        return str(self.room)+' '+str(self.drink)
 
 class history(models.Model):
     drink = models.CharField(max_length = 50)
@@ -59,3 +59,10 @@ class history(models.Model):
     quantity = models.IntegerField()
     is_sale = models.BooleanField()
     is_cancelled = models.BooleanField()
+
+    class Meta:
+        verbose_name = "history"
+        ordering = ['room','drink']
+
+    def __str__(self):
+        return str(self.room)+' '+str(self.drink)
