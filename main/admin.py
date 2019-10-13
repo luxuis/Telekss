@@ -2,9 +2,9 @@ from django.contrib import admin
 from .models import drinks,rooms,history,stocks,food
 
 class stocksAdmin(admin.ModelAdmin):
-    list_display   = ('drink', 'room', 'quantity',)
-    list_filter    = ('room', 'drink',)
-    ordering       = ('room', 'drink',)
+    list_display   = ('drinks', 'room', 'quantity','is_accepter')
+    list_filter    = ('room', 'drinks',)
+    ordering       = ('room', 'drinks',)
 
 class historyAdmin(admin.ModelAdmin):
     list_display   = ('drink', 'room', 'quantity',)
@@ -13,7 +13,7 @@ class historyAdmin(admin.ModelAdmin):
     ordering       = ('date',)
 
 class drinksAdmin(admin.ModelAdmin):
-    list_display   = ('name', 'container_size', 'threshold','by_bottle','is_champagne',)
+    list_display   = ('name', 'container_size', 'threshold','by_bottle','is_champagne','is_soldout')
     list_filter    = ('name','is_champagne',)
     ordering       = ('name',)
 

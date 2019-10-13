@@ -1,0 +1,30 @@
+</<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>sqrt(ZiBar) </title>
+  </head>
+  <body>
+    <h1>Réserve ZiBar </h1>
+    <hr>
+    <!--Demande-->
+    <form action="Zibar" method="POST">
+      {% for salle, drink in demande %}
+      {% csrf_token %}
+      <h3  > Demande de {{drink}} de la salle {{salle}}
+      <button type="submit" name=Accepter value={{drink}},{{salle}} > Accepter </button>
+      <button type="submit" name=Annuler value={{drink}}> Annuler </button> </h3>
+      <hr>
+      {% endfor %}
+    </form>
+    <!--Livraison-->
+    <form action="Zibar" method="POST">
+    {% for salle, drink in livraison %}
+    {% csrf_token %}
+    <h3> Livraison en cour de {{drink}} a la salle {{salle}}
+    <button type="submit" name=Terminer value={{drink}},{{salle}} > Terminer </button>
+    <hr>
+    {% endfor %}
+    </form>
+  </body>
+</html>

@@ -19,6 +19,7 @@ class drinks(models.Model):
     threshold = models.IntegerField()
     by_bottle = models.BooleanField()
     is_champagne = models.BooleanField()
+    is_soldout = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "drinks"
@@ -26,6 +27,12 @@ class drinks(models.Model):
 
     def __str__(self):
         return self.name
+
+    def set_soldout(self,bool):
+        self.is_soldout = bool
+        self.save()
+        return None
+
 
 class rooms(models.Model):
     name = models.CharField(max_length = 30)
@@ -40,17 +47,29 @@ class rooms(models.Model):
         return self.name
 
 class stocks(models.Model):
-    drink = models.ForeignKey(drinks, on_delete = models.CASCADE)
+    drinks = models.ForeignKey(drinks, on_delete = models.CASCADE)
     room = models.ForeignKey(rooms, on_delete = models.CASCADE)
     quantity = models.IntegerField()
     consommation = models.IntegerField()
+    is_accepter  = models.BooleanField(default = False)
 
     class Meta:
         verbose_name = "stocks"
-        ordering = ['room','drink']
+        ordering = ['room','drinks']
 
     def __str__(self):
-        return str(self.room)+' '+str(self.drink)
+        return str(self.room)+' '+str(self.drinks)
+
+    def set_accepter(self,bool):
+        self.is_accepter = bool
+        self.save()
+        return None
+
+
+    def refil(self,value):
+        self.quantity += value
+        self.save()
+        return None
 
 class history(models.Model):
     drink = models.CharField(max_length = 50)
