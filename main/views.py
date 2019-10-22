@@ -34,3 +34,7 @@ def Zibar(request):
             demande.append((drink.room.name,drink.drinks.name))
 
     return render(request, 'main/Zibar.html', locals())
+
+def Accueil(request):
+
+    return render(request, 'main/Accueil.html', locals())
