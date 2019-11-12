@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path('Zibar', views.Zibar),
+    path('Client', views.Client),
     path('',views.Accueil)
 ]
