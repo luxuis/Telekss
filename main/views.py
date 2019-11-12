@@ -41,6 +41,13 @@ def Accueil(request):
 
     return render(request,'main/Accueil.html',locals())
 
+def test_salle(user):
+
+    return True
+
+from django.contrib.auth.decorators import login_required, user_passes_test
+@login_required
+@user_passes_test(test_salle)
 def Client(request):
     user = request.user
     print(user.groups)
