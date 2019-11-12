@@ -109,6 +109,7 @@ class Serveur_salle_1(models.Model):
         verbose_name = "Serveur de la Salle 1"
         ordering = ['fams','proms']
 
+
 # print(User.objects.filter( groups__name='Serveur salle 1').exists())
 
 

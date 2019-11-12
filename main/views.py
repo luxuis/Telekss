@@ -40,11 +40,11 @@ def Zibar(request):
 
 
 def Client(request):
+    user = request.user
+    print(user.groups)
     drinks = []
-    perm = User.has_perm(main.Permission_serveur_salle_1)
     rang = {0,1,2,3,4,5,6,7,8,9}
     for drink in stocks.objects.all():
         if drink.room.name == "Salle_1":
             drinks.append(drink.drinks.name)
-    print(locals())
     return render(request,'main/Client.html',locals())
