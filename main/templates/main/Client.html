@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Client</title>
+  </head>
+  <body>
+    <h1>Client {{salle}}</h1>
+    <h2>Tu as la perm ? {{perm}}</h2>
+    <form action="Client" method="POST">
+      {% for drink in drinks %}
+      {% csrf_token %}
+      <h3  > {{drink}}
+      <select name="qte">
+        {% for i in rang %}
+          <option value={{i}}>{{i}}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" name=Accepter value={{drink}},{{salle}} > Accepter </button>
+      <hr>
+      {% endfor %}
+    </form>
+  </body>
+</html>

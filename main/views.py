@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import stocks
 from .models import drinks as dk
+from django.contrib.auth.models import User
+
 
 
 def Zibar(request):
@@ -35,6 +37,14 @@ def Zibar(request):
 
     return render(request, 'main/Zibar.html', locals())
 
-def Accueil(request):
 
-    return render(request, 'main/Accueil.html', locals())
+
+def Client(request):
+    user = request.user
+    print(user.groups)
+    drinks = []
+    rang = {0,1,2,3,4,5,6,7,8,9}
+    for drink in stocks.objects.all():
+        if drink.room.name == "Salle_1":
+            drinks.append(drink.drinks.name)
+    return render(request,'main/Client.html',locals())
