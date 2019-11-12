@@ -37,7 +37,9 @@ def Zibar(request):
 
     return render(request, 'main/Zibar.html', locals())
 
+def Accueil(request):
 
+    return render(request,'main/Accueil.html',locals())
 
 def Client(request):
     user = request.user
