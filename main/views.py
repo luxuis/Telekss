@@ -2,9 +2,16 @@ from django.shortcuts import render
 from .models import stocks
 from .models import drinks as dk
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth import authenticate
 
 
+def test_salle(user):
+    print(user.user_permissions.all())
+    return True
 
+@login_required
+@user_passes_test(test_salle)
 def Zibar(request):
     demande = []
     livraison = []
@@ -38,14 +45,14 @@ def Zibar(request):
     return render(request, 'main/Zibar.html', locals())
 
 def Accueil(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
 
+    user = authenticate(username='john', password='secret')
     return render(request,'main/Accueil.html',locals())
 
-def test_salle(user):
 
-    return True
 
-from django.contrib.auth.decorators import login_required, user_passes_test
 @login_required
 @user_passes_test(test_salle)
 def Client(request):
