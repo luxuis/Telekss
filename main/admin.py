@@ -7,7 +7,7 @@ class stocksAdmin(admin.ModelAdmin):
     ordering       = ('room', 'drinks',)
 
 class historyAdmin(admin.ModelAdmin):
-    list_display   = ('drink', 'room', 'quantity','date','is_sale')
+    list_display   = ('drink', 'room', 'quantity','date','is_sale','is_cancelled')
     list_filter    = ('room', 'drink',)
     date_hierarchy = 'date'
     ordering       = ('date',)

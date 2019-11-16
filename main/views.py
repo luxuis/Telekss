@@ -88,3 +88,26 @@ def Client_Salle_1(request):
             if int(qte) != 0:
                 stocks.objects.filter(drinks = drinkId,room = roomId)[0].refil(int(qte),True)
     return render(request,'main/Client.html',locals())
+
+def History(request):
+    operation=[]
+
+    btnAnnuler = request.POST.get('Annuler')
+    if btnAnnuler != None:
+        drinkName, roomName ,quantitynb= btnAnnuler.split(',')
+        history.objects.filter(drink__name = drinkName,room__name = roomName,quantity =quantitynb)[0].set_cancelled(True)
+
+    btnConfirmer = request.POST.get('Confirmer')
+    if btnConfirmer != None:
+        drinkName, roomName = btnConfirmer.split(',')
+        history.objects.filter(drink__name = drinkName,room__name = roomName,quantity =quantitynb)[0].set_saled(True)
+
+    for event in history.objects.all():
+        if event.is_cancelled:
+            operation.append(((event.date, event.room, event.drink, event.quantity, 'Vente annulée')))
+        elif event.is_sale:
+            operation.append(((event.date, event.room, event.drink, event.quantity,'Vente')))
+        else:
+            operation.append(((event.date, event.room, event.drink, event.quantity, 'Recharge')))
+
+    return render(request, 'main/History.html',locals())

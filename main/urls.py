@@ -8,4 +8,5 @@ urlpatterns = [
     path('Accueil',views.Accueil),
     path('Fdp',views.Fdp),
     path('', auth_views.LoginView.as_view()),
+    path('History',views.History),
 ]
