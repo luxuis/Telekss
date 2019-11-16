@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
   <head>
+
     <meta charset="utf-8">
     <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" >Authentification</a></nav>
+    <div class="card">
+<div class="card-body bg-light">
 
 {% block content %}
 
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
+<div class="alert alert-danger" role="alert">
+Your username and password didn't match. Please try again.
+</div>
 {% endif %}
 
 {% if next %}
     {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+    <div class="alert alert-warning" role="alert">
+    Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</div>
     {% else %}
     <p>Please login to see this page.</p>
     {% endif %}
@@ -23,22 +32,33 @@
 
 <form method="post" action="">
 {% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
 
-<input type="submit" value="login">
+<div class="container">
+<div class="control-group">
+    <label class="control-label">{{ form.username.label_tag }}</label>
+    <div class="controls">
+      <div type="text" id="username" name="username" placeholder="" class="input-xlarge">{{ form.username }}</div>
+    </div>
+</div>
+
+<div class="control-group mb-3">
+
+    <label class="control-label" for="password">{{ form.password.label_tag }}</label>
+    <div class="controls">
+        <div type="password" id="password" name="password" placeholder="" class="input-xlarge">{{ form.password }}</div>
+     </div>
+</div>
+
+<input type="submit" class="btn btn-primary pt-1" value="login">
 <input type="hidden" name="next" value="Accueil">
 </form>
 
 
 {% endblock %}
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
 </html>

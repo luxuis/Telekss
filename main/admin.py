@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import drinks,rooms,history,stocks,food,Serveur_salle_1
+from .models import drinks,rooms,history,stocks,food
 
 class stocksAdmin(admin.ModelAdmin):
     list_display   = ('drinks', 'room', 'quantity','is_accepter')
@@ -7,7 +7,7 @@ class stocksAdmin(admin.ModelAdmin):
     ordering       = ('room', 'drinks',)
 
 class historyAdmin(admin.ModelAdmin):
-    list_display   = ('drink', 'room', 'quantity',)
+    list_display   = ('drink', 'room', 'quantity','date','is_sale')
     list_filter    = ('room', 'drink',)
     date_hierarchy = 'date'
     ordering       = ('date',)
@@ -26,13 +26,10 @@ class foodAdmin(admin.ModelAdmin):
     list_display   = ('name',)
     ordering       = ('name',)
 
-class Salle_1Admin(admin.ModelAdmin):
-    list_display   = ('bucque','fams','proms','is_Zi',)
-    ordering       = ('bucque',)
+
 
 admin.site.register(drinks, drinksAdmin)
 admin.site.register(rooms, roomsAdmin)
 admin.site.register(history, historyAdmin)
 admin.site.register(stocks, stocksAdmin)
 admin.site.register(food, foodAdmin)
-admin.site.register(Serveur_salle_1, Salle_1Admin)

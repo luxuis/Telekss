@@ -9,14 +9,13 @@
   </head>
   <body>
     <h1>Client {{salle}}</h1>
-    <h2>Tu as la perm ? {{perm}}</h2>
-    <form action="Client" method="POST">
+    <form action="{{salleView}}" method="POST">
       {% for drink in drinks %}
       {% csrf_token %}
       <h3  > {{drink}}
-      <select name="qte">
+      <select name="qte,{{drink}}">
         {% for i in rang %}
-          <option value={{i}}>{{i}}</option>
+          <option value={{i}},{{drink}}>{{i}}</option>
         {% endfor %}
       </select>
       <button type="submit" name=Accepter value={{drink}},{{salle}} > Accepter </button>

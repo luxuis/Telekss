@@ -34,6 +34,7 @@ class drinks(models.Model):
         return None
 
 
+
 class rooms(models.Model):
     name = models.CharField(max_length = 30)
     is_bar = models.BooleanField()
@@ -66,18 +67,20 @@ class stocks(models.Model):
         return None
 
 
-    def refil(self,value):
+    def refil(self,value,is_sale):
         self.quantity += value
+        h = history(drink = self.drinks,room = self.room, quantity = value, is_sale = is_sale)
+        h.save()
         self.save()
         return None
 
 class history(models.Model):
-    drink = models.CharField(max_length = 50)
-    room = models.CharField(max_length = 30)
+    drink = models.ForeignKey(drinks, on_delete = models.CASCADE)
+    room = models.ForeignKey(rooms, on_delete = models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default = 0)
     is_sale = models.BooleanField()
-    is_cancelled = models.BooleanField()
+    is_cancelled = models.BooleanField(default = False)
 
     class Meta:
         verbose_name = "history"
@@ -86,43 +89,6 @@ class history(models.Model):
     def __str__(self):
         return str(self.room)+' '+str(self.drink)
 
+    def addDrink(drink,room,value):
 
-### Permission ###
-from django.contrib.auth.models import Permission,Group,User
-# from django.contrib.auth import get_user_model
-# User = get_user_model()
-from django.contrib.contenttypes.models import ContentType
-import os
-
-class Permission_serveur_salle_1(Permission):
-    name = 'Permission serveur salle 1'
-    code = 'Permission_serveur_salle_1'
-
-class Serveur_salle_1(models.Model):
-    bucque = models.CharField(max_length = 30)
-    fams = models.IntegerField()
-    proms = models.IntegerField(default = 218)
-    is_Zi = models.BooleanField(default = False)
-
-    class Meta:
-        permissions = [('can_use_salle_1','Can use salle 1')]
-        verbose_name = "Serveur de la Salle 1"
-        ordering = ['fams','proms']
-
-
-# print(User.objects.filter( groups__name='Serveur salle 1').exists())
-
-
-#     def get_DATA():
-#         cwd = os.getcwd()
-#         with open(cwd + "\\main\\serveur_salle_1.csv") as file:
-#             data = file.readlines()
-#             for line in data:
-#                 print(line)
-#                 linesplit = line.split(';')
-#                 if len(linesplit) == 2:
-#                     bucque = linesplit[0]
-#                     fams = linesplit[1]
-#                     Serveur_salle_1(bucque = bucque, fams = fams)
-#
-# Serveur_salle_1.get_DATA()
+        return None
