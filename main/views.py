@@ -7,11 +7,23 @@ from django.contrib.auth import authenticate
 
 
 def test_salle(user):
-    print(user.user_permissions.all())
-    return True
+    for group in user.groups.all():
+        if group.name == "Serveur salle 1":
+            return True
+    return False
+
+def test_Zibar(user):
+    for group in user.groups.all():
+        if group.name == "Zibar":
+            return True
+    return False
 
 @login_required
-@user_passes_test(test_salle)
+def Fdp(request):
+    return render(request,'main/Fdp.html',locals())
+
+@login_required
+@user_passes_test(test_Zibar, login_url='/Fdp')
 def Zibar(request):
     demande = []
     livraison = []
@@ -44,20 +56,16 @@ def Zibar(request):
 
     return render(request, 'main/Zibar.html', locals())
 
+@login_required
 def Accueil(request):
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-
-    user = authenticate(username='john', password='secret')
     return render(request,'main/Accueil.html',locals())
 
 
 
 @login_required
-@user_passes_test(test_salle)
+@user_passes_test(test_salle, login_url='/Fdp')
 def Client(request):
     user = request.user
-    print(user.groups)
     drinks = []
     rang = {0,1,2,3,4,5,6,7,8,9}
     for drink in stocks.objects.all():
