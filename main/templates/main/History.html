@@ -1,0 +1,20 @@
+</<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title %}Historique{% endblock %}
+{% block content %}
+    <h1>Historique des opérations </h1>
+
+    <form action="Historique" method="POST">
+      {% for date,salle,drink,quantity,status in operation %}
+      {% csrf_token %}
+      {% if status == 'Vente' %}
+      <h3 > Confirmer la vente de {{quantity}} {{drink}} de la salle {{salle}} à {{date}} ?
+      <button type="submit" name=Confirmer value={{drink}},{{salle}},{{quantity}} > Confirmer </button>
+      <button type="submit" name=Annuler value={{drink}},{{salle}},{{quantity}}> Annuler </button> </h3>
+      <hr>
+      {% else %}
+        <h3 >{{date}} {{quantity}} {{drink}} {{salle}} {{status}} </h3>
+      {% endif %}
+      {% endfor %}
+    </form>
+{% endblock %}

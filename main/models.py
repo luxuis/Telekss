@@ -84,8 +84,22 @@ class history(models.Model):
         ordering = ['room','drink']
 
     def __str__(self):
-        return str(self.room)+' '+str(self.drink)
+        if self.is_sale:
+            return str(self.date)+' '+str(self.room)+' '+str(self.drink)+' '+str(self.quantity)+' '+'Vente'
+        elif self.is_cancelled:
+            return str(self.date)+' '+str(self.room)+' '+str(self.drink)+' '+str(self.quantity)+' '+'Vente ANNULEE'
+        else:
+            return str(self.date)+' '+str(self.room)+' '+str(self.drink)+' '+str(self.quantity)+' '+'Recharge demandé'
 
+    def set_saled(self,bool):
+        self.is_sale = bool
+        self.save()
+        return None
+
+    def set_cancelled(self,bool):
+        self.is_cancelled = bool
+        self.save()
+        return None
 
 ### Permission ###
 from django.contrib.auth.models import Permission,Group,User

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import stocks
 from .models import drinks as dk
+from .models import history
 from django.contrib.auth.models import User
 
 
@@ -57,3 +58,26 @@ def Client(request):
         if drink.room.name == "Salle_1":
             drinks.append(drink.drinks.name)
     return render(request,'main/Client.html',locals())
+
+def History(request):
+    operation=[]
+
+    btnAnnuler = request.POST.get('Annuler')
+    if btnAnnuler != None:
+        drinkName, roomName ,quantitynb= btnAnnuler.split(',')
+        history.objects.filter(drinks__name = drinkName,room__name = roomName,quantity =quantitynb)[0].set_cancelled(True)
+
+    btnConfirmer = request.POST.get('Confirmer')
+    if btnConfirmer != None:
+        drinkName, roomName = btnConfirmer.split(',')
+        history.objects.filter(drinks__name = drinkName,room__name = roomName,quantity =quantitynb)[0].set_saled(True)
+
+    for event in history.objects.all():
+        if event.is_cancelled:
+            operation.append(((event.date, event.room, event.drink, event.quantity, 'Vente annulée')))
+        elif event.is_sale:
+            operation.append(((event.date, event.room, event.drink, event.quantity,'Vente')))
+        else:
+            operation.append(((event.date, event.room, event.drink, event.quantity, 'Recharge')))
+
+    return render(request, 'main/History.html',locals())
