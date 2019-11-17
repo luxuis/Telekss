@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title %}Soldout{% endblock %}
+{% block content %}
+<h1>Liste des produits soldout </h1>
+
+<form action="soldout" method="POST">
+  {% for Name in Drinks %}
+  {% csrf_token %}
+  <h3 > Le produit {{Name}} est en rupture de stock
+  <button type="submit" name=Annuler value={{Name}}> Annuler </button> </h3>
+  {% endfor %}
+</form>
+
+{% endblock %}

@@ -77,7 +77,7 @@ def Accueil(request):
 @login_required
 def sqrtcdf(request):
     sqrt = 102
-    while sqrt == 102:  
+    while sqrt == 102:
         sqrt = random.randint(1,175)
     sqrt = str(sqrt)
     return render(request,'main/sqrt(Cdf).html',locals())
@@ -123,3 +123,10 @@ def History(request):
             operation.append(((event.date, event.room, event.drink, event.quantity, 'Rechargée')))
 
     return render(request, 'main/History.html',locals())
+
+def Soldout(request):
+    Drinks=dk.objects.filter(is_soldout=True)
+    btnAnnuler = request.POST.get('Annuler')
+    if btnAnnuler != None:
+        dk.objects.filter(name=btnAnnuler)[0].set_soldout(False)
+    return render(request,'main/soldout.html',locals( ))

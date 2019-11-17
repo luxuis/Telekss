@@ -12,4 +12,5 @@ urlpatterns = [
     path('sqrt(Cdf)',views.sqrtcdf),
     path('logout',views.logoutView),
     path('logoutSuccess',views.logoutSuccess),
+    path('soldout',views.Soldout),
 ]
