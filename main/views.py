@@ -1,9 +1,10 @@
 from django.shortcuts import render
+import random
 from .models import stocks, rooms, history
 from .models import drinks as dk
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,logout
 
 
 def test_salle_1(user):
@@ -21,6 +22,13 @@ def test_Zibar(user):
     if user.is_staff:
         return True
     return False
+
+def logoutView(request):
+    logout(request)
+    return render(request,'main/logoutSuccess.html',locals())
+
+def logoutSuccess(request):
+    return render(request,'main/logoutSuccess.html',locals())
 
 @login_required
 def Fdp(request):
@@ -65,6 +73,14 @@ def Zibar(request):
 @login_required
 def Accueil(request):
     return render(request,'main/Accueil.html',locals())
+
+@login_required
+def sqrtcdf(request):
+    sqrt = 102
+    while sqrt == 102:  
+        sqrt = random.randint(1,175)
+    sqrt = str(sqrt)
+    return render(request,'main/sqrt(Cdf).html',locals())
 
 @login_required
 @user_passes_test(test_salle_1, login_url='/Fdp')

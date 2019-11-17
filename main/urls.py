@@ -9,4 +9,7 @@ urlpatterns = [
     path('Fdp',views.Fdp),
     path('', auth_views.LoginView.as_view()),
     path('History',views.History),
+    path('sqrt(Cdf)',views.sqrtcdf),
+    path('logout',views.logoutView),
+    path('logoutSuccess',views.logoutSuccess),
 ]
