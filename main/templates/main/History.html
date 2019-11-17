@@ -5,11 +5,11 @@
     <h1>Historique des opérations </h1>
 
     <form action="History" method="POST">
-      {% for date,salle,drink,quantity,status in operation %}
+      {% for id,date,salle,drink,quantity,status in operation %}
       {% csrf_token %}
       {% if status == 'Vente' %}
-      <h3 > Vente de {{quantity}} {{drink}} de la salle {{salle}} à {{date}} 
-      <button type="submit" name=Annuler value={{drink}},{{salle}},{{quantity}}> Annuler </button> </h3>
+      <h3 > {{date}} Vente de {{quantity}} {{drink}} de la salle {{salle}}
+      <button type="submit" name=Annuler value={{id}}> Annuler </button> </h3>
       <hr>
       {% else %}
         <h3 >{{date}} {{quantity}} {{drink}} {{salle}} {{status}} </h3>

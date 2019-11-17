@@ -100,11 +100,11 @@ class history(models.Model):
 
     def __str__(self):
         if self.is_sale:
-            return str(self.date)+' '+str(self.room)+' '+str(self.drink)+' '+str(self.quantity)+' '+'Vente'
+            return str(self.id)+' '+str(self.date)+' '+str(self.room)+' '+str(self.drink)+' '+str(self.quantity)+' '+'Vente'
         elif self.is_cancelled:
-            return str(self.date)+' '+str(self.room)+' '+str(self.drink)+' '+str(self.quantity)+' '+'Vente ANNULEE'
+            return str(self.id)+' '+str(self.date)+' '+str(self.room)+' '+str(self.drink)+' '+str(self.quantity)+' '+'Vente ANNULEE'
         else:
-            return str(self.date)+' '+str(self.room)+' '+str(self.drink)+' '+str(self.quantity)+' '+'Recharge'
+            return str(self.id)+' '+str(self.date)+' '+str(self.room)+' '+str(self.drink)+' '+str(self.quantity)+' '+'Recharge'
 
     def set_saled(self,bool):
         self.is_sale = bool

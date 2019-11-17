@@ -105,23 +105,28 @@ def Client_Salle_1(request):
                 stocks.objects.filter(drinks = drinkId,room = roomId)[0].drain(int(qte),True)
     return render(request,'main/Client.html',locals())
 
+@login_required
+@user_passes_test(test_salle_1, login_url='/Fdp')
 def History(request):
     operation=[]
-
     btnAnnuler = request.POST.get('Annuler')
     if btnAnnuler != None:
-        drinkName, roomName ,quantitynb= btnAnnuler.split(',')
-        history.objects.filter(drink__name = drinkName,room__name = roomName,quantity =int(quantitynb))[0].set_cancelled(True)
-        history.objects.filter(drink__name = drinkName,room__name = roomName,quantity =int(quantitynb))[0].set_saled(False)
-        stocks.objects.filter(drinks__name = drinkName,room__name = roomName)[0].refil2(int(quantitynb))
+        ID=btnAnnuler
+        Commande=history.objects.filter(id=ID)[0]
+        Commande.set_cancelled(True)
+        Commande.set_saled(False)
+        drinkName,roomName,quantitynb=Commande.drink,Commande.room,Commande.quantity
+        drinkId = dk.objects.filter(name = drinkName)[0].id
+        roomId = rooms.objects.filter(name = roomName)[0].id
+        stocks.objects.filter(drinks = drinkId,room = roomId)[0].refil2(int(quantitynb))
     for event in history.objects.all():
         if event.is_cancelled:
-            operation.append(((event.date, event.room, event.drink, event.quantity, 'Vente annulée')))
+            operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Vente annulée'))
         elif event.is_sale:
-            operation.append(((event.date, event.room, event.drink, event.quantity,'Vente')))
+            operation.append((event.id,event.date, event.room, event.drink, event.quantity,'Vente'))
         else:
-            operation.append(((event.date, event.room, event.drink, event.quantity, 'Rechargée')))
-
+            operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Rechargée'))
+    operation=operation[:30]
     return render(request, 'main/History.html',locals())
 
 def Soldout(request):
