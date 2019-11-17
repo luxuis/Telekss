@@ -86,7 +86,7 @@ def Client_Salle_1(request):
             roomId = rooms.objects.filter(name = "Salle_1")[0].id
 
             if int(qte) != 0:
-                stocks.objects.filter(drinks = drinkId,room = roomId)[0].refil(int(qte),True)
+                stocks.objects.filter(drinks = drinkId,room = roomId)[0].drain(int(qte),True) #coucou
     return render(request,'main/Client.html',locals())
 
 def History(request):
@@ -95,19 +95,15 @@ def History(request):
     btnAnnuler = request.POST.get('Annuler')
     if btnAnnuler != None:
         drinkName, roomName ,quantitynb= btnAnnuler.split(',')
-        history.objects.filter(drink__name = drinkName,room__name = roomName,quantity =quantitynb)[0].set_cancelled(True)
-
-    btnConfirmer = request.POST.get('Confirmer')
-    if btnConfirmer != None:
-        drinkName, roomName = btnConfirmer.split(',')
-        history.objects.filter(drink__name = drinkName,room__name = roomName,quantity =quantitynb)[0].set_saled(True)
-
+        history.objects.filter(drink__name = drinkName,room__name = roomName,quantity =int(quantitynb))[0].set_cancelled(True)
+        history.objects.filter(drink__name = drinkName,room__name = roomName,quantity =int(quantitynb))[0].set_saled(False)
+        stocks.objects.filter(drinks__name = drinkName,room__name = roomName)[0].refil2(int(quantitynb))
     for event in history.objects.all():
         if event.is_cancelled:
             operation.append(((event.date, event.room, event.drink, event.quantity, 'Vente annulée')))
         elif event.is_sale:
             operation.append(((event.date, event.room, event.drink, event.quantity,'Vente')))
         else:
-            operation.append(((event.date, event.room, event.drink, event.quantity, 'Recharge')))
+            operation.append(((event.date, event.room, event.drink, event.quantity, 'Rechargée')))
 
     return render(request, 'main/History.html',locals())

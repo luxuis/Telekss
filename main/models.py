@@ -67,10 +67,22 @@ class stocks(models.Model):
         return None
 
 
+    def drain(self,value,is_sale):#coucou
+        self.quantity -= value
+        h = history(drink = self.drinks,room = self.room, quantity = value, is_sale = is_sale)
+        h.save()
+        self.save()
+        return None
+
     def refil(self,value,is_sale):
         self.quantity += value
         h = history(drink = self.drinks,room = self.room, quantity = value, is_sale = is_sale)
         h.save()
+        self.save()
+        return None
+
+    def refil2(self,value): #coucou
+        self.quantity += value
         self.save()
         return None
 
@@ -84,7 +96,7 @@ class history(models.Model):
 
     class Meta:
         verbose_name = "history"
-        ordering = ['room','drink']
+        ordering = ['-date']
 
     def __str__(self):
         if self.is_sale:
@@ -92,7 +104,7 @@ class history(models.Model):
         elif self.is_cancelled:
             return str(self.date)+' '+str(self.room)+' '+str(self.drink)+' '+str(self.quantity)+' '+'Vente ANNULEE'
         else:
-            return str(self.date)+' '+str(self.room)+' '+str(self.drink)+' '+str(self.quantity)+' '+'Recharge demandé'
+            return str(self.date)+' '+str(self.room)+' '+str(self.drink)+' '+str(self.quantity)+' '+'Recharge'
 
     def set_saled(self,bool):
         self.is_sale = bool
