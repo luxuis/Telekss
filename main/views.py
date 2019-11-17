@@ -86,7 +86,7 @@ def Client_Salle_1(request):
             roomId = rooms.objects.filter(name = "Salle_1")[0].id
 
             if int(qte) != 0:
-                stocks.objects.filter(drinks = drinkId,room = roomId)[0].drain(int(qte),True) #coucou
+                stocks.objects.filter(drinks = drinkId,room = roomId)[0].drain(int(qte),True)
     return render(request,'main/Client.html',locals())
 
 def History(request):

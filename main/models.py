@@ -67,7 +67,7 @@ class stocks(models.Model):
         return None
 
 
-    def drain(self,value,is_sale):#coucou
+    def drain(self,value,is_sale):
         self.quantity -= value
         h = history(drink = self.drinks,room = self.room, quantity = value, is_sale = is_sale)
         h.save()
@@ -81,7 +81,7 @@ class stocks(models.Model):
         self.save()
         return None
 
-    def refil2(self,value): #coucou
+    def refil2(self,value):
         self.quantity += value
         self.save()
         return None
