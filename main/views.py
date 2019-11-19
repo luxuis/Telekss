@@ -86,6 +86,7 @@ def sqrtcdf(request):
 def Client_Salle_1(request):
     salle = "Salle 1"
     salleView = Client_Salle_1
+    bool = False
     user = request.user
     drinks = []
     rang = {0,1,2,3,4,5,6,7,8,9}
@@ -96,6 +97,7 @@ def Client_Salle_1(request):
         qte = request.POST.get('qte,'+drink.drinks.name)
         accepter = request.POST.get('Accepter')
         if accepter != None and qte != None:
+            bool = True
             qte, drinkName  = qte.split(",")
             drinkId = dk.objects.filter(name = drinkName)[0].id
             roomId = rooms.objects.filter(name = "Salle_1")[0].id

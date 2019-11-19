@@ -6,12 +6,14 @@
     <nav class="navbar navbar-light bg-light border-top">
       <span class="navbar-brand mb-0 h1">Client {{salle}}</span>
     </nav>
+    {%if bool%}
     <div class="alert alert-success alert-dismissible fade show" role="alert">
       <strong>Consommation Bucquée!</strong>
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
+    {%endif%}
 
     <table class="table table-hover shadow p-3 mb-3 bg-white rounded">
       <thead>
@@ -20,8 +22,9 @@
           <th scope="col">Quantité</th>
         </tr>
       </thead>
+      <form action="{{salleView}}" method="POST">
       <tbody>
-        <form action="{{salleView}}"method="POST">
+
           {% for drink in drinks %}
           {% csrf_token %}
             <tr>
@@ -35,12 +38,13 @@
               </td>
             </tr>
             {% endfor %}
-          </form>
+
       </tbody>
     </table>
     <div class="col-md-12 text-center">
-      <button type="submit" class="btn btn-success center-block" name=Accepter value={{drink}},{{salle}} > Accepter </button>
+      <button type="submit" class="btn btn-success center-block" name=Accepter > Accepter </button>
     </div>
+    </form>
   </body>
 </html>
 {% endblock %}
