@@ -62,7 +62,6 @@ def Zibar(request):
 
 
     for drink in stocks.objects.all():
-        print(drink)
         if drink.is_accepter:
             livraison.append((drink.room.name,drink.drinks.name))
         if drink.quantity < drink.drinks.threshold and not(drink.drinks.is_soldout) and not(drink.is_accepter):
@@ -129,6 +128,8 @@ def History(request):
     operation=operation[:30]
     return render(request, 'main/History.html',locals())
 
+@login_required
+@user_passes_test(test_Zibar, login_url='/Fdp')
 def Soldout(request):
     Drinks=dk.objects.filter(is_soldout=True)
     btnAnnuler = request.POST.get('Annuler')

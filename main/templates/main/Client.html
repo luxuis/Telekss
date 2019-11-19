@@ -21,7 +21,7 @@
         </tr>
       </thead>
       <tbody>
-        <form action="Zibar" method="POST">
+        <form action="{{salleView}}"method="POST">
           {% for drink in drinks %}
           {% csrf_token %}
             <tr>
