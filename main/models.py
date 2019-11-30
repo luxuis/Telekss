@@ -13,6 +13,7 @@ class food(models.Model):
     def __str__(self):
         return self.name
 
+
 class drinks(models.Model):
     name = models.CharField(max_length = 50)
     container_size = models.IntegerField()
@@ -32,8 +33,6 @@ class drinks(models.Model):
         self.is_soldout = bool
         self.save()
         return None
-
-
 
 class rooms(models.Model):
     name = models.CharField(max_length = 30)
