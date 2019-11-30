@@ -2,18 +2,38 @@
 {% extends "base.html" %}
 {% block title %}Historique{% endblock %}
 {% block content %}
-    <h1>Historique des opérations </h1>
+    <nav class="navbar navbar-light bg-light border-top">
+      <span class="navbar-brand mb-0 h1">Historique des opérations</span>
+    </nav>
 
-    <form action="History" method="POST">
-      {% for id,date,salle,drink,quantity,status in operation %}
-      {% csrf_token %}
-      {% if status == 'Vente' %}
-      <h3 > {{date}} Vente de {{quantity}} {{drink}} de la salle {{salle}}
-      <button type="submit" name=Annuler value={{id}}> Annuler </button> </h3>
-      <hr>
-      {% else %}
-        <h3 >{{date}} {{quantity}} {{drink}} {{salle}} {{status}} </h3>
-      {% endif %}
-      {% endfor %}
-    </form>
-{% endblock %}
+    <table class="table table-hover shadow p-3 mb-3 bg-white rounded">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Conso</th>
+          <th scope="col">Quantité</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <form action="History" method="POST">
+          {% for id,date,salle,drink,quantity,status in operation %}
+          {% csrf_token %}
+          {% if status == 'Vente' %}
+          <tr>
+            <td>{{date}}</td>
+            <td>{{drink}}</td>
+            <td>{{quantity}}</td>
+            <td>
+              <button type="submit" class="btn btn-danger" name=Annuler value={{id}}>Annuler</button>
+            </td>
+
+          </tr>
+          {% else %}
+            <h3 >{{date}} {{quantity}} {{drink}} {{salle}} {{status}} </h3>
+          {% endif %}
+          {% endfor %}
+        </form>
+      </tbody>
+    </table>
+    {% endblock %}
