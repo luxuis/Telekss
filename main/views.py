@@ -99,23 +99,18 @@ def Client(request):
     for group in user.groups.all():
         if group.name == "Serveur Salle Aztèque":
             salle = "Aztèque"
-            salleView = "Bucquage_Aztèque"
 
         if group.name == "Serveur Salle Nordique":
             salle = "Nordique"
-            salleView = "Bucquage_Nordique"
 
         if group.name == "Serveur Salle Grèce":
             salle = "Grèce"
-            salleView = "Bucquage_Grèce"
 
         if group.name == "Serveur Salle Egypte":
             salle = "Egypte"
-            salleView = "Bucquage_Egypte"
 
     if user.is_staff:   # faire menu changer de salle
         salle = "Nordique"
-        salleView = "Client_Nordique"
 
     bool = False
     drinks = []
@@ -128,6 +123,7 @@ def Client(request):
         accepter = request.POST.get('Accepter')
         if accepter != None and qte != None:
             bool = True
+            print(qte)
             qte, drinkName  = qte.split(",")
             drinkId = dk.objects.filter(name = drinkName)[0].id
             roomId = rooms.objects.filter(name = salle)[0].id
@@ -160,9 +156,6 @@ def History(request):
     if user.is_staff:  #menu déroulant
         roomuser = "Nordique"
 
-
-
-
     operation=[]
 
     btnAnnuler = request.POST.get('Annuler')
@@ -185,7 +178,7 @@ def History(request):
         stocks.objects.filter(drinks = drinkId,room = roomId)[0].drain(int(quantitynb))
 
     for event in history.objects.all():
-        if event.room == roomuser:
+        if str(event.room) == roomuser:
             if event.is_sale:
                 if event.is_cancelled:
                     operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Vente annulée'))
@@ -198,8 +191,9 @@ def History(request):
                     operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Rechargée'))
 
     operation=operation[:30]
-    return render(request, 'main/History.html',locals())@login_required
+    return render(request, 'main/History.html',locals())
 
+@login_required
 @user_passes_test(test_Zibar, login_url='/Fdp')
 def Soldout(request):
     Drinks=dk.objects.filter(is_soldout=True)
