@@ -55,18 +55,15 @@ def Zibar(request):
         drinkName, roomName = btnTerminer.split(',')
         st = stocks.objects.filter(drinks__name = drinkName,room__name = roomName)[0]
         drink = dk.objects.filter(name = drinkName)[0]
-        print(drink.container_size)
         st.set_accepter(False)
         value = drink.container_size
         st.refil(value,False)
-
 
     for drink in stocks.objects.all():
         if drink.is_accepter:
             livraison.append((drink.room.name,drink.drinks.name))
         if drink.quantity < drink.drinks.threshold and not(drink.drinks.is_soldout) and not(drink.is_accepter):
             demande.append((drink.room.name,drink.drinks.name))
-
     return render(request, 'main/Zibar.html', locals())
 
 @login_required
@@ -109,24 +106,44 @@ def Client_Salle_1(request):
 @login_required
 @user_passes_test(test_salle_1, login_url='/Fdp')
 def History(request):
+
+    for group in request.user.groups.all():
+        roomuser=group.name     #voir si un mec peut être dans plusieurs groupes
+
     operation=[]
+
     btnAnnuler = request.POST.get('Annuler')
     if btnAnnuler != None:
         ID=btnAnnuler
         Commande=history.objects.filter(id=ID)[0]
         Commande.set_cancelled(True)
-        Commande.set_saled(False)
         drinkName,roomName,quantitynb=Commande.drink,Commande.room,Commande.quantity
         drinkId = dk.objects.filter(name = drinkName)[0].id
         roomId = rooms.objects.filter(name = roomName)[0].id
         stocks.objects.filter(drinks = drinkId,room = roomId)[0].refil2(int(quantitynb))
+
+    btnAnnulerZibar = request.POST.get('AnnulerZibar')
+    if btnAnnulerZibar != None:
+        ID=btnAnnuler
+        Recharge=history.objects.filter(id=ID)[0]
+        drinkName,roomName,quantitynb=Commande.drink,Commande.room,Commande.quantity
+        drinkId = dk.objects.filter(name = drinkName)[0].id
+        roomId = rooms.objects.filter(name = roomName)[0].id
+        stocks.objects.filter(drinks = drinkId,room = roomId)[0].drain(int(quantitynb))
+
     for event in history.objects.all():
-        if event.is_cancelled:
-            operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Vente annulée'))
-        elif event.is_sale:
-            operation.append((event.id,event.date, event.room, event.drink, event.quantity,'Vente'))
-        else:
-            operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Rechargée'))
+        if event.room == roomuser:
+            if event.is_sale:
+                if event.is_cancelled:
+                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Vente annulée'))
+                else:
+                    operation.append((event.id,event.date, event.room, event.drink, event.quantity,'Vente'))
+            else:
+                if event.is_cancelled:
+                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Recharge annulée'))
+                else:
+                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Rechargée'))
+
     operation=operation[:30]
     return render(request, 'main/History.html',locals())
 
@@ -138,3 +155,38 @@ def Soldout(request):
     if btnAnnuler != None:
         dk.objects.filter(name=btnAnnuler)[0].set_soldout(False)
     return render(request,'main/soldout.html',locals( ))
+
+
+@login_required
+@user_passes_test(test_Restal, login_url='/Fdp')
+def Restal(request):
+    demande = []
+    preparation = []
+    livraison = []
+
+    btnAnnuler = request.POST.get('Annuler')
+    if btnAnnuler != None:
+        foodname = btnAnnuler
+        food.objects.filter(name = foodname)[0].delete()
+
+    btnAccepter = request.POST.get('Accepter')
+    if btnAccepter != None:
+        foodname, roomName = btnAccepter.split(',')
+        demandeFood.objects.filter(food = foodname,room__name = roomName)[0].set_prepartion(True)
+
+    btnTerminer = request.POST.get('Terminer')
+    if btnTerminer != None:
+        foodname, roomName = btnTerminer.split(',')
+        df = demandeFood.objects.filter(foodname = drinkName,room__name = roomName)[0]
+
+
+
+    for food in demandeFood.objects.all():
+        if food.is_en_preparation:
+            preparation.append((food.room.name,food.food.name))
+        elif food.is_en_livraison:
+            livraison.append((food.room.name,food.food.name))
+        else:
+            demande.append((drink.room.name,drink.drinks.name))
+
+    return render(request, 'main/Restal.html', locals())

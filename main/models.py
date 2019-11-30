@@ -115,3 +115,26 @@ class history(models.Model):
         self.is_cancelled = bool
         self.save()
         return None
+
+class demandeFood(models.Model):
+    food = models.ForeignKey(food, on_delete = models.CASCADE)
+    room = models.ForeignKey(rooms, on_delete = models.CASCADE)
+    is_en_preparation = models.BooleanField(default=False)
+    is_en_livraison = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "demande de degeul'ss"
+        ordering = ['room','food']
+
+    def __str__(self):
+        return self.food
+
+    def set_prepartion(self,bool):
+        self.is_en_preparation = bool
+        self.save()
+        return None
+
+    def set_livraison(self,bool):
+        self.is_en_livraison = bool
+        self.save()
+        return None

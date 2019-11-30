@@ -1,0 +1,96 @@
+</<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title %}Restal{% endblock %}
+{% block content %}
+  <nav class="navbar navbar-light bg-light border-top">
+    <span class="navbar-brand mb-0 h1">Restal</span>
+  </nav>
+
+  <div class="container mt-3">
+
+    <div class="row">
+      <div class="col-sm border-right">
+        <p class="text-center">Demande de degeul'ss<p>
+        <table class="table table-hover shadow p-3 mb-3 bg-white rounded">
+          <thead>
+            <tr>
+              <th scope="col">Salle</th>
+              <th scope="col">Degeul'ss</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <form action="Restal" method="POST">
+              {% for salle, degeul in demande %}
+              {% csrf_token %}
+                <tr>
+                  <td>{{salle}}</td>
+                  <td>{{degeul}}</td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="submit" class="btn btn-success" name=Accepter value={{degeul}},{{salle}} > Accepter </button>
+                      <button type="submit" class="btn btn-danger" name=Annuler value={{degeul}}> Annuler </button>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </form>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-sm">
+        <p class="text-center">En cour de préparation<p>
+        <table class="table table-hover shadow p-3 mb-3 bg-white rounded">
+          <thead>
+            <tr>
+              <th scope="col">Salle</th>
+              <th scope="col">Degeul'ss</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <form action="Restal" method="POST">
+              {% for salle, drink in preparation %}
+              {% csrf_token %}
+                <tr>
+                  <td>{{salle}}</td>
+                  <td>{{degeul}}</td>
+                  <td>
+                    <button type="submit" class="btn btn-success" name=Terminer value={{degeul}},{{salle}} > Terminer </button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </form>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-sm">
+        <p class="text-center">En cour de livraison<p>
+        <table class="table table-hover shadow p-3 mb-3 bg-white rounded">
+          <thead>
+            <tr>
+              <th scope="col">Salle</th>
+              <th scope="col">Degeul'ss</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <form action="Restal" method="POST">
+              {% for salle, drink in livraison %}
+              {% csrf_token %}
+                <tr>
+                  <td>{{salle}}</td>
+                  <td>{{degeul}}</td>
+                  <td>
+                    <button type="submit" class="btn btn-success" name=Terminer value={{degeul}},{{salle}} > Terminer </button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </form>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
