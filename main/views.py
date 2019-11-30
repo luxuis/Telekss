@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import random
-from .models import stocks, rooms, history
+from .models import stocks, rooms, history, demandeFood
 from .models import drinks as dk
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -18,6 +18,14 @@ def test_salle_1(user):
 def test_Zibar(user):
     for group in user.groups.all():
         if group.name == "Zibar":
+            return True
+    if user.is_staff:
+        return True
+    return False
+
+def test_Restal(user):
+    for group in user.groups.all():
+        if group.name == "Restal":
             return True
     if user.is_staff:
         return True
@@ -55,7 +63,6 @@ def Zibar(request):
         drinkName, roomName = btnTerminer.split(',')
         st = stocks.objects.filter(drinks__name = drinkName,room__name = roomName)[0]
         drink = dk.objects.filter(name = drinkName)[0]
-        print(drink.container_size)
         st.set_accepter(False)
         value = drink.container_size
         st.refil(value,False)
@@ -138,3 +145,37 @@ def Soldout(request):
     if btnAnnuler != None:
         dk.objects.filter(name=btnAnnuler)[0].set_soldout(False)
     return render(request,'main/soldout.html',locals( ))
+
+@login_required
+@user_passes_test(test_Restal, login_url='/Fdp')
+def Restal(request):
+    demande = []
+    preparation = []
+    livraison = []
+
+    btnAnnuler = request.POST.get('Annuler')
+    if btnAnnuler != None:
+        foodname = btnAnnuler
+        food.objects.filter(name = foodname)[0].delete()
+
+    btnAccepter = request.POST.get('Accepter')
+    if btnAccepter != None:
+        foodname, roomName = btnAccepter.split(',')
+        demandeFood.objects.filter(food = foodname,room__name = roomName)[0].set_prepartion(True)
+
+    btnTerminer = request.POST.get('Terminer')
+    if btnTerminer != None:
+        foodname, roomName = btnTerminer.split(',')
+        df = demandeFood.objects.filter(foodname = drinkName,room__name = roomName)[0]
+
+
+
+    for food in demandeFood.objects.all():
+        if food.is_en_preparation:
+            preparation.append((food.room.name,food.food.name))
+        elif food.is_en_livraison:
+            livraison.append((food.room.name,food.food.name))
+        else:
+            demande.append((drink.room.name,drink.drinks.name))
+
+    return render(request, 'main/Restal.html', locals())

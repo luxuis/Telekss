@@ -13,6 +13,7 @@ class food(models.Model):
     def __str__(self):
         return self.name
 
+
 class drinks(models.Model):
     name = models.CharField(max_length = 50)
     container_size = models.IntegerField()
@@ -32,8 +33,6 @@ class drinks(models.Model):
         self.is_soldout = bool
         self.save()
         return None
-
-
 
 class rooms(models.Model):
     name = models.CharField(max_length = 30)
@@ -113,5 +112,28 @@ class history(models.Model):
 
     def set_cancelled(self,bool):
         self.is_cancelled = bool
+        self.save()
+        return None
+
+class demandeFood(models.Model):
+    food = models.ForeignKey(food, on_delete = models.CASCADE)
+    room = models.ForeignKey(rooms, on_delete = models.CASCADE)
+    is_en_preparation = models.BooleanField(default=False)
+    is_en_livraison = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "demande de degeul'ss"
+        ordering = ['room','food']
+
+    def __str__(self):
+        return self.food
+
+    def set_prepartion(self,bool):
+        self.is_en_preparation = bool
+        self.save()
+        return None
+
+    def set_livraison(self,bool):
+        self.is_en_livraison = bool
         self.save()
         return None
