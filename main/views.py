@@ -80,8 +80,8 @@ def Accueil(request):
 
 @login_required
 def sqrtcdf(request):
-    sqrt = 102
-    while sqrt in [102,13,119]:
+    sqrt = 0
+    while sqrt in [0,102,13,119]:
         sqrt = random.randint(1,175)
     sqrt = str(sqrt)
     return render(request,'main/sqrt(Cdf).html',locals())
