@@ -14,4 +14,5 @@ urlpatterns = [
     path('logoutSuccess',views.logoutSuccess),
     path('soldout',views.Soldout),
     path('Restal',views.Restal),
+    path('HistoryRestal',views.HistoryRestal)
 ]

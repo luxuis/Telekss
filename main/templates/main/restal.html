@@ -29,7 +29,7 @@
                   <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
                       <button type="submit" class="btn btn-success" name=Accepter value={{degeul}},{{salle}} > Accepter </button>
-                      <button type="submit" class="btn btn-danger" name=Annuler value={{degeul}}> Annuler </button>
+                      <button type="submit" class="btn btn-danger" name=Annuler value={{degeul}},{{salle}}> Annuler </button>
                     </div>
                   </td>
                 </tr>
@@ -50,7 +50,7 @@
           </thead>
           <tbody>
             <form action="Restal" method="POST">
-              {% for salle, drink in preparation %}
+              {% for salle, degeul in preparation %}
               {% csrf_token %}
                 <tr>
                   <td>{{salle}}</td>
@@ -76,13 +76,13 @@
           </thead>
           <tbody>
             <form action="Restal" method="POST">
-              {% for salle, drink in livraison %}
+              {% for salle, degeul in livraison %}
               {% csrf_token %}
                 <tr>
                   <td>{{salle}}</td>
                   <td>{{degeul}}</td>
                   <td>
-                    <button type="submit" class="btn btn-success" name=Terminer value={{degeul}},{{salle}} > Terminer </button>
+                    <button type="submit" class="btn btn-success" name=Livré value={{degeul}},{{salle}} > Livré </button>
                   </td>
                 </tr>
                 {% endfor %}

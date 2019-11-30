@@ -1,0 +1,14 @@
+</<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title %}Historique{% endblock %}
+{% block content %}
+    <h1>Historique des opérations </h1>
+
+    <form action="HistoryRestal" method="POST">
+      {% for id,date,salle,drink in operation %}
+      {% csrf_token %}
+      <h3 > {{date}} Vente de {{drink}} de la salle {{salle}}
+      <button type="submit" name=Annuler value={{id}}> Annuler </button> </h3>
+      {% endfor %}
+    </form>
+{% endblock %}

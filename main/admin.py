@@ -7,7 +7,7 @@ class stocksAdmin(admin.ModelAdmin):
     ordering       = ('room', 'drinks',)
 
 class demandeFoodAdmin(admin.ModelAdmin):
-    list_display   = ('food', 'room', 'is_en_preparation','is_en_livraison')
+    list_display   = ('food', 'room', 'is_en_preparation','is_en_livraison','is_livre')
     list_filter    = ('room', 'food',)
     ordering       = ('room', 'food',)
 

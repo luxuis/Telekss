@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import random
-from .models import stocks, rooms, history
+from .models import stocks, rooms, history, demandeFood, food
 from .models import drinks as dk
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -115,8 +115,6 @@ def Client_Salle_1(request):
 @user_passes_test(test_salle_1, login_url='/Fdp')
 def History(request):
 
-    for group in request.user.groups.all():
-        roomuser=group.name     #voir si un mec peut être dans plusieurs groupes
 
     operation=[]
 
@@ -140,17 +138,16 @@ def History(request):
         stocks.objects.filter(drinks = drinkId,room = roomId)[0].drain(int(quantitynb))
 
     for event in history.objects.all():
-        if event.room == roomuser:
-            if event.is_sale:
-                if event.is_cancelled:
-                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Vente annulée'))
-                else:
-                    operation.append((event.id,event.date, event.room, event.drink, event.quantity,'Vente'))
+        if event.is_sale:
+            if event.is_cancelled:
+                operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Vente annulée'))
             else:
-                if event.is_cancelled:
-                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Recharge annulée'))
-                else:
-                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Rechargée'))
+                operation.append((event.id,event.date, event.room, event.drink, event.quantity,'Vente'))
+        else:
+            if event.is_cancelled:
+                operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Recharge annulée'))
+            else:
+                operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Rechargée'))
 
     operation=operation[:30]
     return render(request, 'main/History.html',locals())
@@ -174,27 +171,57 @@ def Restal(request):
 
     btnAnnuler = request.POST.get('Annuler')
     if btnAnnuler != None:
-        foodname = btnAnnuler
-        food.objects.filter(name = foodname)[0].delete()
+        foodname, roomName = btnAnnuler.split(',')
+        demandeFood.objects.filter(food__name = foodname,room__name = roomName)[0].delete()
 
     btnAccepter = request.POST.get('Accepter')
     if btnAccepter != None:
+
         foodname, roomName = btnAccepter.split(',')
-        demandeFood.objects.filter(food = foodname,room__name = roomName)[0].set_prepartion(True)
+        demandeFood.objects.filter(food__name = foodname,room__name = roomName)[0].set_preparation(True)
 
     btnTerminer = request.POST.get('Terminer')
     if btnTerminer != None:
         foodname, roomName = btnTerminer.split(',')
-        df = demandeFood.objects.filter(foodname = drinkName,room__name = roomName)[0]
+        demandeFood.objects.filter(food__name = foodname,room__name = roomName)[0].set_livraison(True)
 
-
+    btnLivré = request.POST.get('Livré')
+    if btnLivré != None:
+        foodname, roomName = btnLivré.split(',')
+        df = demandeFood.objects.filter(food__name = foodname,room__name = roomName)[0]
+        df.set_preparation(False)
+        df.set_livraison(False)
+        df.set_livre(True)
 
     for food in demandeFood.objects.all():
-        if food.is_en_preparation:
+        print(food.is_en_preparation  and not(food.is_en_livraison) and not(food.is_livre))
+        if food.is_en_preparation  and not(food.is_en_livraison) and not(food.is_livre):
+            print(food.food.name)
             preparation.append((food.room.name,food.food.name))
-        elif food.is_en_livraison:
+        elif food.is_en_livraison and not(food.is_livre):
             livraison.append((food.room.name,food.food.name))
-        else:
-            demande.append((drink.room.name,drink.drinks.name))
+        elif not(food.is_livre):
+            demande.append((food.room.name,food.food.name))
 
     return render(request, 'main/Restal.html', locals())
+
+@login_required
+@user_passes_test(test_Restal, login_url='/Fdp')
+def HistoryRestal(request):
+
+    operation=[]
+
+    btnAnnuler = request.POST.get('Annuler')
+    if btnAnnuler != None:
+        ID=btnAnnuler
+        Commande=demandeFood.objects.filter(id=ID)[0]
+        Commande.set_livre(False)
+        Commande.set_preparation(True)
+        Commande.set_livraison(True)
+
+    for event in demandeFood.objects.all():
+        if event.is_livre:
+            operation.append((event.id,event.date, event.room, event.food))
+
+    operation=operation[:30]
+    return render(request, 'main/HistoryRestal.html',locals())
