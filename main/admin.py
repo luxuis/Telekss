@@ -1,10 +1,15 @@
 from django.contrib import admin
-from .models import drinks,rooms,history,stocks,food
+from .models import drinks,rooms,history,stocks,food,demandeFood
 
 class stocksAdmin(admin.ModelAdmin):
     list_display   = ('drinks', 'room', 'quantity','is_accepter')
     list_filter    = ('room', 'drinks',)
     ordering       = ('room', 'drinks',)
+
+class demandeFoodAdmin(admin.ModelAdmin):
+    list_display   = ('food', 'room', 'is_en_preparation','is_en_livraison')
+    list_filter    = ('room', 'food',)
+    ordering       = ('room', 'food',)
 
 class historyAdmin(admin.ModelAdmin):
     list_display   = ('drink', 'room', 'quantity','date','is_sale','is_cancelled')
@@ -33,3 +38,4 @@ admin.site.register(rooms, roomsAdmin)
 admin.site.register(history, historyAdmin)
 admin.site.register(stocks, stocksAdmin)
 admin.site.register(food, foodAdmin)
+admin.site.register(demandeFood, demandeFoodAdmin)

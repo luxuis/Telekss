@@ -23,6 +23,14 @@ def test_Zibar(user):
         return True
     return False
 
+def test_Restal(user):
+    for group in user.groups.all():
+        if group.name == "Restal":
+            return True
+    if user.is_staff:
+        return True
+    return False
+
 def logoutView(request):
     logout(request)
     return render(request,'main/logoutSuccess.html',locals())

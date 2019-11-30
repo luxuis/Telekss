@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-# La BDD est encore la même que celle de l'année dernière donc on peut la changer si c'est nécessaire
-
 class food(models.Model):
     name = models.CharField(max_length = 100)
 
@@ -45,6 +43,29 @@ class rooms(models.Model):
 
     def __str__(self):
         return self.name
+
+class demandeFood(models.Model):
+    food = models.ForeignKey(food, on_delete = models.CASCADE)
+    room = models.ForeignKey(rooms, on_delete = models.CASCADE)
+    is_en_preparation = models.BooleanField(default=False)
+    is_en_livraison = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "demande de degeul'ss"
+        ordering = ['room','food']
+
+    def __str__(self):
+        return self.food.name + self.room.name
+
+    def set_prepartion(self,bool):
+        self.is_en_preparation = bool
+        self.save()
+        return None
+
+    def set_livraison(self,bool):
+        self.is_en_livraison = bool
+        self.save()
+        return None
 
 class stocks(models.Model):
     drinks = models.ForeignKey(drinks, on_delete = models.CASCADE)
@@ -112,28 +133,5 @@ class history(models.Model):
 
     def set_cancelled(self,bool):
         self.is_cancelled = bool
-        self.save()
-        return None
-
-class demandeFood(models.Model):
-    food = models.ForeignKey(food, on_delete = models.CASCADE)
-    room = models.ForeignKey(rooms, on_delete = models.CASCADE)
-    is_en_preparation = models.BooleanField(default=False)
-    is_en_livraison = models.BooleanField(default=False)
-
-    class Meta:
-        verbose_name = "demande de degeul'ss"
-        ordering = ['room','food']
-
-    def __str__(self):
-        return self.food
-
-    def set_prepartion(self,bool):
-        self.is_en_preparation = bool
-        self.save()
-        return None
-
-    def set_livraison(self,bool):
-        self.is_en_livraison = bool
         self.save()
         return None
