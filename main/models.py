@@ -101,6 +101,21 @@ class stocks(models.Model):
         self.save()
         return None
 
+    def set_conso(self,value):
+        self.quantity += value
+        self.save()
+        return None
+
+    def cancel_conso(self,value):
+        self.quantity -= value
+        self.save()
+        return None
+
+    def drainZibar(self,value):   #pour annulation recharge
+        self.quantity -= value
+        self.save()
+        return None
+
     def refil(self,value,is_sale):
         self.quantity += value
         h = history(drink = self.drinks,room = self.room, quantity = value, is_sale = is_sale)
@@ -108,7 +123,7 @@ class stocks(models.Model):
         self.save()
         return None
 
-    def refil2(self,value):
+    def refilClient(self,value):  #pour annulation vente
         self.quantity += value
         self.save()
         return None

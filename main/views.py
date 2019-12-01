@@ -17,13 +17,36 @@ def test_Serveur(user):
             return True
         if group.name == "Serveur Salle Grèce":
             return True
+        if group.name == "CDF":
+            return True
     if user.is_staff:
         return True
     return False
 
+def test_history(user):
+    for group in user.groups.all():
+        if group.name == "Serveur Salle Aztèque":
+            return True
+        if group.name == "Serveur Salle Nordique":
+            return True
+        if group.name == "Serveur Salle Egypte":
+            return True
+        if group.name == "Serveur Salle Grèce":
+            return True
+        if group.name == "Réserve Zibar":
+            return True
+        if group.name == "CDF":
+            return True
+    if user.is_staff:
+        return True
+    return False
+
+
 def test_Zibar(user):
     for group in user.groups.all():
-        if group.name == "Zibar":
+        if group.name == "Réserve Zibar":
+            return True
+        if group.name == "CDF":
             return True
     if user.is_staff:
         return True
@@ -32,6 +55,8 @@ def test_Zibar(user):
 def test_Restal(user):
     for group in user.groups.all():
         if group.name == "Restal":
+            return True
+        if group.name == "CDF":
             return True
     if user.is_staff:
         return True
@@ -96,6 +121,7 @@ def sqrtcdf(request):
 @user_passes_test(test_Serveur, login_url='/Fdp')
 def Client(request):
     user=request.user
+    groupe=""
     for group in user.groups.all():
         if group.name == "Serveur Salle Aztèque":
             salle = "Aztèque"
@@ -109,34 +135,47 @@ def Client(request):
         if group.name == "Serveur Salle Egypte":
             salle = "Egypte"
 
-    if user.is_staff:   # faire menu changer de salle
-        salle = "Nordique"
+        if group.name == "CDF":
+            groupe="CDF"
+
+    if user.is_staff or groupe == "CDF":
+        staff=True
+        salle="Nordique"
+        sallelist=["Egypte","Grèce","Aztèque","Nordique"]
+
+        Newsalle=request.POST.get('Room')
+        if Newsalle != None:
+            salle=Newsalle
 
     bool = False
     drinks = []
     rang = {0,1,2,3,4,5,6,7,8,9}
     for drink in stocks.objects.all():
         if drink.room.name == salle:
-            drinks.append(drink.drinks.name)
+            drinkName=drink.drinks.name
+            drinks.append(drinkName)
+            drinksoldout=[]
+            if dk.objects.filter(name = drinkName)[0].is_soldout:
+                drinksoldout.append(drinkName)
+            qte = request.POST.get('qte,'+drink.drinks.name)
+            accepter = request.POST.get('Accepter')
+            if accepter != None and qte != None:
+                bool = True
+                qte, drinkName  = qte.split(",")
+                drinkId = dk.objects.filter(name = drinkName)[0].id
+                roomId = rooms.objects.filter(name = salle)[0].id
+                if int(qte) != 0:
+                    st=stocks.objects.filter(drinks = drinkId,room = roomId)[0]
+                    st.drain(int(qte),True)
+                    st.set_conso(int(qte))
 
-        qte = request.POST.get('qte,'+drink.drinks.name)
-        accepter = request.POST.get('Accepter')
-        if accepter != None and qte != None:
-            bool = True
-            print(qte)
-            qte, drinkName  = qte.split(",")
-            drinkId = dk.objects.filter(name = drinkName)[0].id
-            roomId = rooms.objects.filter(name = salle)[0].id
-
-            if int(qte) != 0:
-                stocks.objects.filter(drinks = drinkId,room = roomId)[0].drain(int(qte),True)
     return render(request,'main/Client.html',locals())
 
 @login_required
-@user_passes_test(test_Serveur, login_url='/Fdp')
+@user_passes_test(test_history, login_url='/Fdp')
 def History(request):
-
     user=request.user
+    groupe=""
     for group in user.groups.all():
         if group.name == "Serveur Salle Aztèque":
             roomuser = "Aztèque"
@@ -153,10 +192,25 @@ def History(request):
         if group.name == "Réserve Zibar":
             roomuser = "Réserve Zibar"
 
-    if user.is_staff:  #menu déroulant
-        roomuser = "Nordique"
+        if group.name == "CDF":
+            groupe="CDF"
 
     operation=[]
+
+    if user.is_staff or groupe == "CDF":
+        staff=True
+        for event in history.objects.all():
+            if event.is_sale:
+                if event.is_cancelled:
+                        operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Vente annulée'))
+                else:
+                        operation.append((event.id,event.date, event.room, event.drink, event.quantity,'Vente'))
+            else:
+                if event.is_cancelled:
+                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Recharge annulée'))
+                else:
+                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Rechargée'))
+        return render(request, 'main/History.html',locals())
 
     btnAnnuler = request.POST.get('Annuler')
     if btnAnnuler != None:
@@ -166,29 +220,31 @@ def History(request):
         drinkName,roomName,quantitynb=Commande.drink,Commande.room,Commande.quantity
         drinkId = dk.objects.filter(name = drinkName)[0].id
         roomId = rooms.objects.filter(name = roomName)[0].id
-        stocks.objects.filter(drinks = drinkId,room = roomId)[0].refil2(int(quantitynb))
+        stocks.objects.filter(drinks = drinkId,room = roomId)[0].refilClient(int(quantitynb))
+        stocks.objects.filter(drinks = drinkId,room = roomId)[0].cancel_conso(int(quantitynb))
 
     btnAnnulerZibar = request.POST.get('AnnulerZibar')
     if btnAnnulerZibar != None:
-        ID=btnAnnuler
+        ID=btnAnnulerZibar
         Recharge=history.objects.filter(id=ID)[0]
-        drinkName,roomName,quantitynb=Commande.drink,Commande.room,Commande.quantity
+        Recharge.set_cancelled(True)
+        drinkName,roomName,quantitynb=Recharge.drink,Recharge.room,Recharge.quantity
         drinkId = dk.objects.filter(name = drinkName)[0].id
         roomId = rooms.objects.filter(name = roomName)[0].id
-        stocks.objects.filter(drinks = drinkId,room = roomId)[0].drain(int(quantitynb))
+        stocks.objects.filter(drinks = drinkId,room = roomId)[0].drainZibar(int(quantitynb))
 
     for event in history.objects.all():
-        if str(event.room) == roomuser:
-            if event.is_sale:
+        if event.is_sale:
+            if str(event.room) == roomuser:
                 if event.is_cancelled:
                     operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Vente annulée'))
                 else:
                     operation.append((event.id,event.date, event.room, event.drink, event.quantity,'Vente'))
+        elif roomuser =="Réserve Zibar":
+            if event.is_cancelled:
+                operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Recharge annulée'))
             else:
-                if event.is_cancelled:
-                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Recharge annulée'))
-                else:
-                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Rechargée'))
+                operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Rechargée'))
 
     operation=operation[:30]
     return render(request, 'main/History.html',locals())

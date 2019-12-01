@@ -7,16 +7,24 @@
     <form action="History" method="POST">
       {% for id,date,salle,drink,quantity,status in operation %}
       {% csrf_token %}
+      {% if staff %}
+      {% if status == 'Vente' %}
+      <h3 > {{date}} Vente de {{quantity}} {{drink}} de la salle {{salle}}</h3>
+      {% elif status == 'Rechargée' %}
+      <h3 > {{date}} Recharge de {{quantity}} {{drink}} pour la salle {{salle}}</h3>
+      {% endif %}
+      {% else %}
       {% if status == 'Vente' %}
       <h3 > {{date}} Vente de {{quantity}} {{drink}} de la salle {{salle}}
       <button type="submit" name=Annuler value={{id}}> Annuler </button> </h3>
-      {% elif status == 'Recharge' %}
+      {% elif status == 'Rechargée' %}
       <h3 > {{date}} Recharge de {{quantity}} {{drink}} pour la salle {{salle}}
       <button type="submit" name=AnnulerZibar value={{id}}> Annuler </button> </h3>
       <hr>
       {% else %}
         <h3 >{{date}} {{quantity}} {{drink}} {{salle}} {{status}} </h3>
       {% endif %}
+      {% endif %}
       {% endfor %}
-    </form>
+      </form>
 {% endblock %}

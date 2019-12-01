@@ -28,6 +28,16 @@
           {% for drink in drinks %}
           {% csrf_token %}
             <tr>
+              {% if drink in drinksoldout %}
+              <td>{{drink}} <strong>Attention plus disponible en Zibar</strong></td>
+              <td>
+                <select name="qte,{{drink}}">
+                  {% for i in rang %}
+                    <option value={{i}},{{drink}}>{{i}}</option>
+                  {% endfor %}
+                </select>
+              </td>
+              {% else %}
               <td>{{drink}}</td>
               <td>
                 <select name="qte,{{drink}}">
@@ -37,6 +47,7 @@
                 </select>
               </td>
             </tr>
+            {% endif %}
             {% endfor %}
 
       </tbody>
@@ -45,6 +56,31 @@
       <button type="submit" class="btn btn-success btn-block" name=Accepter > Accepter </button>
     </div>
     </form>
+    {% if staff%}
+    <form action="Client" method="POST">
+    <tbody>
+
+
+        {% csrf_token %}
+          <tr>
+            <td>Choix de la salle</td>
+            <td>
+              <select name="Room">
+                {% for i in sallelist%}
+                  <option value={{i}}>{{i}}</option>
+                {% endfor %}
+              </select>
+            </td>
+          </tr>
+
+
+    </tbody>
+  </table>
+  <div class="col-md-12 text-center">
+    <button type="submit" class="btn btn-success btn-block" name=Confirmer > Confirmer </button>
+  </div>
+  </form>
+  {% endif %}
   </body>
 </html>
 {% endblock %}
