@@ -8,7 +8,10 @@
   {% for Name in Drinks %}
   {% csrf_token %}
   <h3 > Le produit {{Name}} est en rupture de stock
-  <button type="submit" name=Annuler value={{Name}}> Annuler </button> </h3>
+  {% if zibar1 %}
+  <button type="submit" name=Annuler value={{Name}}> Annuler </button>
+  {% endif %}
+  </h3>
   {% endfor %}
 </form>
 

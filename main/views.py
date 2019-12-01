@@ -5,7 +5,7 @@ from .models import drinks as dk
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate,logout
-
+import numpy as np
 
 def test_Serveur(user):
     for group in user.groups.all():
@@ -78,7 +78,7 @@ def Fdp(request):
 def Zibar(request):
     demande = []
     livraison = []
-
+    rang=np.linspace(1,100,100,dtype='uint32')
     btnAnnuler = request.POST.get('Annuler')
     if btnAnnuler != None:
         drinkName = btnAnnuler
@@ -87,20 +87,28 @@ def Zibar(request):
     btnAccepter = request.POST.get('Accepter')
     if btnAccepter != None:
         drinkName, roomName = btnAccepter.split(',')
+        q=request.POST.get('Quantité '+drinkName+' '+roomName)
         stocks.objects.filter(drinks__name = drinkName,room__name = roomName)[0].set_accepter(True)
+        drinkid=dk.objects.filter( name = drinkName )[0].id
+        roomid=rooms.objects.filter(name = roomName)[0].id
+        h = history(drink = dk.objects.filter(name = drinkName)[0], room = rooms.objects.filter(name = roomName)[0], is_sale = False, quantity = q)
+        h.save()
 
     btnTerminer = request.POST.get('Terminer')
     if btnTerminer != None:
         drinkName, roomName = btnTerminer.split(',')
         st = stocks.objects.filter(drinks__name = drinkName,room__name = roomName)[0]
         drink = dk.objects.filter(name = drinkName)[0]
+        qte=history.objects.filter(drink__name = drinkName, room__name = roomName, is_sale = False)[0].quantity
+        value = drink.container_size*qte
         st.set_accepter(False)
-        value = drink.container_size
-        st.refil(value,False)
+        st.refilClient(value)
 
     for drink in stocks.objects.all():
-        if drink.is_accepter:
-            livraison.append((drink.room.name,drink.drinks.name))
+        if drink.is_accepter :
+            qte=history.objects.filter(drink__name = drink.drinks.name, room__name = drink.room.name, is_sale = False)[0].quantity
+            value = dk.objects.filter(name = drink.drinks.name)[0].container_size*qte
+            livraison.append((drink.room.name,drink.drinks.name,value))
         if drink.quantity < drink.drinks.threshold and not(drink.drinks.is_soldout) and not(drink.is_accepter):
             demande.append((drink.room.name,drink.drinks.name))
     return render(request, 'main/Zibar.html', locals())
@@ -112,7 +120,7 @@ def Accueil(request):
 @login_required
 def sqrtcdf(request):
     sqrt = 0
-    while sqrt in [0,102,13,119]:
+    while sqrt in [0,102,13,76]:
         sqrt = random.randint(1,175)
     sqrt = str(sqrt)
     return render(request,'main/sqrt(Cdf).html',locals())
@@ -250,10 +258,10 @@ def History(request):
     return render(request, 'main/History.html',locals())
 
 @login_required
-@user_passes_test(test_Zibar, login_url='/Fdp')
 def Soldout(request):
     Drinks=dk.objects.filter(is_soldout=True)
     btnAnnuler = request.POST.get('Annuler')
+    zibar1=test_Zibar(request.user)
     if btnAnnuler != None:
         dk.objects.filter(name=btnAnnuler)[0].set_soldout(False)
     return render(request,'main/soldout.html',locals( ))

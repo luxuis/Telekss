@@ -93,7 +93,6 @@ class stocks(models.Model):
         self.save()
         return None
 
-
     def drain(self,value,is_sale):
         self.quantity -= value
         h = history(drink = self.drinks,room = self.room, quantity = value, is_sale = is_sale)
@@ -113,13 +112,6 @@ class stocks(models.Model):
 
     def drainZibar(self,value):   #pour annulation recharge
         self.quantity -= value
-        self.save()
-        return None
-
-    def refil(self,value,is_sale):
-        self.quantity += value
-        h = history(drink = self.drinks,room = self.room, quantity = value, is_sale = is_sale)
-        h.save()
         self.save()
         return None
 

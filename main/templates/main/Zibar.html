@@ -16,6 +16,7 @@
             <tr>
               <th scope="col">Salle</th>
               <th scope="col">Boisson</th>
+              <th scope="col">Qte de container</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -26,6 +27,13 @@
                 <tr>
                   <td>{{salle}}</td>
                   <td>{{drink}}</td>
+                  <td>
+                    <select name="Quantité {{drink}} {{salle}}">
+                    {% for i in rang %}
+                      <option value={{i}}>{{i}}</option>
+                    {% endfor %}
+                  </select>
+                  </td>
                   <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
                       <button type="submit" class="btn btn-success" name=Accepter value={{drink}},{{salle}} > Accepter </button>
@@ -45,16 +53,18 @@
             <tr>
               <th scope="col">Salle</th>
               <th scope="col">Boisson</th>
+              <th scope="col">Qte livré</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
             <form action="Zibar" method="POST">
-              {% for salle, drink in livraison %}
+              {% for salle, drink,qtet in livraison %}
               {% csrf_token %}
                 <tr>
                   <td>{{salle}}</td>
                   <td>{{drink}}</td>
+                  <td>{{qtet}}</td>
                   <td>
                     <button type="submit" class="btn btn-success" name=Terminer value={{drink}},{{salle}} > Terminer </button>
                   </td>
