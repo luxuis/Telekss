@@ -299,22 +299,47 @@ def Restal(request):
 
     btnAccepter = request.POST.get('Accepter')
     if btnAccepter != None:
-
         foodname, roomName = btnAccepter.split(',')
-        demandeFood.objects.filter(food__name = foodname,room__name = roomName)[0].set_preparation(True)
+        listfood = demandeFood.objects.filter(food__name = foodname,room__name = roomName)
+        l = len(listfood)
+        i = 0
+        while True:
+            if l < i:
+                break
+            if not(listfood[i].is_en_preparation):
+                listfood[i].set_preparation(True)
+                break
+            i += 1
 
     btnTerminer = request.POST.get('Terminer')
     if btnTerminer != None:
         foodname, roomName = btnTerminer.split(',')
-        demandeFood.objects.filter(food__name = foodname,room__name = roomName)[0].set_livraison(True)
+        listfood = demandeFood.objects.filter(food__name = foodname,room__name = roomName)
+        l = len(listfood)
+        i = 0
+        while True:
+            if l < i:
+                break
+            if not(listfood[i].is_en_livraison):
+                listfood[i].set_livraison(True)
+                break
+            i += 1
 
     btnLivré = request.POST.get('Livré')
     if btnLivré != None:
         foodname, roomName = btnLivré.split(',')
-        df = demandeFood.objects.filter(food__name = foodname,room__name = roomName)[0]
-        df.set_preparation(False)
-        df.set_livraison(False)
-        df.set_livre(True)
+        listfood = demandeFood.objects.filter(food__name = foodname,room__name = roomName)
+        l = len(listfood)
+        i = 0
+        while True:
+            if l < i:
+                break
+            if not(listfood[i].is_livre):
+                listfood[i].set_preparation(False)
+                listfood[i].set_livraison(False)
+                listfood[i].set_livre(True)
+                break
+            i += 1
 
     for food in demandeFood.objects.all():
         if food.is_en_preparation  and not(food.is_en_livraison) and not(food.is_livre):
