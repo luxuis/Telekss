@@ -177,6 +177,25 @@ def Client(request):
                     st.drain(int(qte),True)
                     st.set_conso(int(qte))
 
+    fd = []
+    for degeul in food.objects.all():
+        if salle == "Grèce":
+            foodname=degeul.name
+            fd.append(foodname)
+            foodsoldout=[]
+            if food.objects.filter(name = foodname)[0].is_soldout:
+                foodsoldout.append(foodname)
+            qte = request.POST.get('qte,'+drink.drinks.name)
+            accepter = request.POST.get('Accepter')
+            if accepter != None and qte != None:
+                bool = True
+                qte, foodname  = qte.split(",")
+                foodname = food.objects.filter(name = foodname)[0].id
+                room = rooms.objects.filter(name = salle)[0]
+                if int(qte) != 0:
+                    for i in range(int(qte)):
+                        print('a')
+                        demandeFood(food,room)
     return render(request,'main/Client.html',locals())
 
 @login_required
@@ -210,14 +229,14 @@ def History(request):
         for event in history.objects.all():
             if event.is_sale:
                 if event.is_cancelled:
-                        operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Vente annulée'))
+                        operation.append((event.id,event.date.strftime("%H:%M:%S"), event.room, event.drink, event.quantity, 'Vente annulée'))
                 else:
-                        operation.append((event.id,event.date, event.room, event.drink, event.quantity,'Vente'))
+                        operation.append((event.id,event.date.strftime("%H:%M:%S"), event.room, event.drink, event.quantity,'Vente'))
             else:
                 if event.is_cancelled:
-                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Recharge annulée'))
+                    operation.append((event.id,event.date.strftime("%H:%M:%S"), event.room, event.drink, event.quantity, 'Recharge annulée'))
                 else:
-                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Rechargée'))
+                    operation.append((event.id,event.date.strftime("%H:%M:%S"), event.room, event.drink, event.quantity, 'Rechargée'))
         return render(request, 'main/History.html',locals())
 
     btnAnnuler = request.POST.get('Annuler')
@@ -245,14 +264,14 @@ def History(request):
         if event.is_sale:
             if str(event.room) == roomuser:
                 if event.is_cancelled:
-                    operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Vente annulée'))
+                    operation.append((event.id,event.date.strftime("%H:%M:%S"), event.room, event.drink, event.quantity, 'Vente annulée'))
                 else:
-                    operation.append((event.id,event.date, event.room, event.drink, event.quantity,'Vente'))
+                    operation.append((event.id,event.date.strftime("%H:%M:%S"), event.room, event.drink, event.quantity,'Vente'))
         elif roomuser =="Réserve Zibar":
             if event.is_cancelled:
-                operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Recharge annulée'))
+                operation.append((event.id,event.date.strftime("%H:%M:%S"), event.room, event.drink, event.quantity, 'Recharge annulée'))
             else:
-                operation.append((event.id,event.date, event.room, event.drink, event.quantity, 'Rechargée'))
+                operation.append((event.id,event.date.strftime("%H:%M:%S"), event.room, event.drink, event.quantity, 'Rechargée'))
 
     operation=operation[:30]
     return render(request, 'main/History.html',locals())
