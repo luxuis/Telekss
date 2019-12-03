@@ -12,6 +12,10 @@ class food(models.Model):
     def __str__(self):
         return self.name
 
+    def set_soldout(self,bool):
+        self.is_soldout = bool
+        self.save()
+        return None
 
 class drinks(models.Model):
     name = models.CharField(max_length = 50)

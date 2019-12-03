@@ -346,3 +346,11 @@ def HistoryRestal(request):
 
     operation=operation[:30]
     return render(request, 'main/HistoryRestal.html',locals())
+
+def SoldoutFood(request):
+    foodsold=food.objects.filter(is_soldout=True)
+    btnAnnuler = request.POST.get('Annuler')
+    Cuist=test_Restal(request.user)
+    if btnAnnuler != None:
+        food.objects.filter(name=btnAnnuler)[0].set_soldout(False)
+    return render(request,'main/soldoutFood.html',locals( ))

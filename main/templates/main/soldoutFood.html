@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title %}Soldout Food{% endblock %}
+{% block content %}
+<h1>Liste des aliments (bouffe) en soldout </h1>
+
+<form action="soldoutFood" method="POST">
+  {% for Name in foodsold %}
+  {% csrf_token %}
+  <h3 > Le produit {{Name}} est en rupture de stock
+  {% if Cuist %}
+  <button type="submit" name=Annuler value={{Name}}> Annuler </button>
+  {% endif %}
+  </h3>
+  {% endfor %}
+</form>
+{% endblock %}
