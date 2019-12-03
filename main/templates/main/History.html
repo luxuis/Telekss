@@ -2,29 +2,131 @@
 {% extends "base.html" %}
 {% block title %}Historique{% endblock %}
 {% block content %}
-    <h1>Historique des opérations </h1>
-
-    <form action="History" method="POST">
+<nav class="navbar navbar-light bg-light border-top">
+  <span class="navbar-brand mb-0 h1">Historique des opérations</span>
+</nav>
+<table class="table table-hover shadow p-3 mb-3 bg-white rounded">
+  <form action="History" method="POST">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Action</th>
+        <th scope="col">Salle</th>
+        <th scope="col">Boisson</th>
+        <th scope="col">Quantité</th>
+        {% if not staff %}
+        <th scope="col">Annuler</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
       {% for id,date,salle,drink,quantity,status in operation %}
       {% csrf_token %}
       {% if staff %}
       {% if status == 'Vente' %}
-      <h3 > {{date}} Vente de {{quantity}} {{drink}} de la salle {{salle}}</h3>
+      <tr>
+        <td>
+          {{date}}
+        </td>
+        <td>
+          Vente
+        </td>
+        <td>
+          {{salle}}
+        </td>
+        <td>
+          {{drink}}
+        </td>
+        <td>
+          {{quantity}}
+        </td>
+      </tr>
       {% elif status == 'Rechargée' %}
-      <h3 > {{date}} Recharge de {{quantity}} {{drink}} pour la salle {{salle}}</h3>
+      <tr>
+        <td>
+          {{date}}
+        </td>
+        <td>
+          Recharge
+        </td>
+        <td>
+          {{salle}}
+        </td>
+        <td>
+          {{drink}}
+        </td>
+        <td>
+          {{quantity}}
+        </td>
+      </tr>
+
       {% endif %}
       {% else %}
       {% if status == 'Vente' %}
-      <h3 > {{date}} Vente de {{quantity}} {{drink}} de la salle {{salle}}
-      <button type="submit" name=Annuler value={{id}}> Annuler </button> </h3>
+      <tr>
+        <td>
+          {{date}}
+        </td>
+        <td>
+          Vente
+        </td>
+        <td>
+          {{salle}}
+        </td>
+        <td>
+          {{drink}}
+        </td>
+        <td>
+          {{quantity}}
+        </td>
+        <td>
+          <button type="submit" name=Annuler value={{id}}> Annuler </button>
+        </td>
+      </tr>
       {% elif status == 'Rechargée' %}
-      <h3 > {{date}} Recharge de {{quantity}} {{drink}} pour la salle {{salle}}
-      <button type="submit" name=AnnulerZibar value={{id}}> Annuler </button> </h3>
-      <hr>
+      <tr>
+        <td>
+          {{date}}
+        </td>
+        <td>
+          Recharge
+        </td>
+        <td>
+          {{salle}}
+        </td>
+        <td>
+          {{drink}}
+        </td>
+        <td>
+          {{quantity}}
+        </td>
+        <td>
+          <button type="submit" name=AnnulerZibar value={{id}}> Annuler </button>
+        </td>
+      </tr>
+
       {% else %}
-        <h3 >{{date}} {{quantity}} {{drink}} {{salle}} {{status}} </h3>
+      <tr>
+        <td>
+          {{date}}
+        </td>
+        <td>
+          {{status}}
+        </td>
+        <td>
+          {{salle}}
+        </td>
+        <td>
+          {{drink}}
+        </td>
+        <td>
+          {{quantity}}
+        </td>
+      </tr>
       {% endif %}
       {% endif %}
       {% endfor %}
-      </form>
+    </tbody>
+  </form>
+</table>
 {% endblock %}
