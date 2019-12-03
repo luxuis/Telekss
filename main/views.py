@@ -185,17 +185,16 @@ def Client(request):
             foodsoldout=[]
             if food.objects.filter(name = foodname)[0].is_soldout:
                 foodsoldout.append(foodname)
-            qte = request.POST.get('qte,'+drink.drinks.name)
-            accepter = request.POST.get('Accepter')
+            qte = request.POST.get('qtef,'+degeul.name)
+            accepter = request.POST.get('Accepterf')
             if accepter != None and qte != None:
                 bool = True
                 qte, foodname  = qte.split(",")
-                foodname = food.objects.filter(name = foodname)[0].id
+                degeulname = food.objects.filter(name = foodname)[0]
                 room = rooms.objects.filter(name = salle)[0]
                 if int(qte) != 0:
                     for i in range(int(qte)):
-                        print('a')
-                        demandeFood(food,room)
+                        demandeFood.save(demandeFood(food = degeulname,room = room))
     return render(request,'main/Client.html',locals())
 
 @login_required
@@ -318,9 +317,7 @@ def Restal(request):
         df.set_livre(True)
 
     for food in demandeFood.objects.all():
-        print(food.is_en_preparation  and not(food.is_en_livraison) and not(food.is_livre))
         if food.is_en_preparation  and not(food.is_en_livraison) and not(food.is_livre):
-            print(food.food.name)
             preparation.append((food.room.name,food.food.name))
         elif food.is_en_livraison and not(food.is_livre):
             livraison.append((food.room.name,food.food.name))
