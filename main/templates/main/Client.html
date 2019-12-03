@@ -73,7 +73,7 @@
               {% if food in foodsoldout %}
               <td>{{food}} <strong>Attention plus disponible a la Restal</strong></td>
               <td>
-                <select name="qte,{{food}}">
+                <select name="qtef,{{food}}">
                   {% for i in rang %}
                     <option value={{i}},{{food}}>{{i}}</option>
                   {% endfor %}
@@ -82,7 +82,7 @@
               {% else %}
               <td>{{food}}</td>
               <td>
-                <select name="qte,{{food}}">
+                <select name="qtef,{{food}}">
                   {% for i in rang %}
                     <option value={{i}},{{food}}>{{i}}</option>
                   {% endfor %}
@@ -94,7 +94,7 @@
       </tbody>
     </table>
     <div class="col-md-12 text-center">
-      <button type="submit" class="btn btn-success btn-block" name=Accepter > Accepter </button>
+      <button type="submit" class="btn btn-success btn-block" name=Accepterf > Accepter </button>
     </div>
     </form>
 
