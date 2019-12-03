@@ -2,17 +2,26 @@
 {% extends "base.html" %}
 {% block title %}Soldout{% endblock %}
 {% block content %}
-<h1>Liste des produits soldout </h1>
+<nav class="navbar navbar-light bg-light border-top">
+  <span class="navbar-brand mb-0 h1">Liste des produits en rupture de stock</span>
+</nav>
+<table class="table table-hover shadow p-3 mb-3 bg-white rounded">
+  <thead>
+    <tr>
+      <th scope="col">Boisson</th>
+      <th scope="col">Annuler</th>
+    </tr>
+  </thead>
+  <tbody>
+    <form action="soldout" method="POST">
+      {% for Name in Drinks %}
+      {% csrf_token %}
+      <tr>
+        <td>{{Name}}</td>
+        <td>{% if zibar1 %}<button type="submit" class="btn btn-danger" name=Annuler value={{Name}}> Annuler </button>{% endif %}</td>
+      </tr>
 
-<form action="soldout" method="POST">
-  {% for Name in Drinks %}
-  {% csrf_token %}
-  <h3 > Le produit {{Name}} est en rupture de stock
-  {% if zibar1 %}
-  <button type="submit" name=Annuler value={{Name}}> Annuler </button>
-  {% endif %}
-  </h3>
-  {% endfor %}
-</form>
-
+      {% endfor %}
+    </form>
+  </tbody>
 {% endblock %}
