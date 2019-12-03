@@ -3,6 +3,7 @@ from django.utils import timezone
 
 class food(models.Model):
     name = models.CharField(max_length = 100)
+    is_soldout = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "food"
