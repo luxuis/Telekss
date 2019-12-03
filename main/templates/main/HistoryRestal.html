@@ -2,13 +2,38 @@
 {% extends "base.html" %}
 {% block title %}Historique{% endblock %}
 {% block content %}
-    <h1>Historique des opérations </h1>
-
-    <form action="HistoryRestal" method="POST">
+<nav class="navbar navbar-light bg-light border-top">
+  <span class="navbar-brand mb-0 h1">Historique Restal</span>
+</nav>
+<table class="table table-hover shadow p-3 mb-3 bg-white rounded">
+  <form action="HistoryRestal" method="POST">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Salle</th>
+        <th scope="col">Boisson</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
       {% for id,date,salle,drink in operation %}
       {% csrf_token %}
-      <h3 > {{date}} Vente de {{drink}} de la salle {{salle}}
-      <button type="submit" name=Annuler value={{id}}> Annuler </button> </h3>
+      <tr>
+        <td>
+          {{date}}
+        </td>
+        <td>
+          {{salle}}
+        </td>
+        <td>
+          {{drink}}
+        </td>
+        <td>
+          <button type="submit" name=Annuler class="btn btn-danger" value={{id}}> Annuler </button> </h3>
+        </td>
+      </tr>
       {% endfor %}
-    </form>
+    </tbody>
+  </form>
+</table>
 {% endblock %}
