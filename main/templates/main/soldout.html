@@ -2,6 +2,160 @@
 {% extends "base.html" %}
 {% block title %}Soldout{% endblock %}
 {% block content %}
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <span class="border-bottom border-dark"></span>
+    {% block nav %}
+    {% if staff %}
+    <a class="navbar-brand" href="/main/sqrt(Cdf)">Telekss</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon" ></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/Accueil">Accueil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin">Admin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/main/Zibar">ZiBar</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/main/Client">Bucquage</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/main/History">Historique</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/main/soldout">Soldout</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/main/Restal">Restal</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/main/HistoryRestal">Historique-Restal</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/main/soldoutFood">Soldout-Food</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/main/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  {% elif CDF %}
+  <a class="navbar-brand" href="/main/sqrt(Cdf)">Telekss</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon" ></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="/Accueil">Accueil</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/main/Zibar">ZiBar</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/main/Client">Bucquage</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/main/History">Historique</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/main/soldout">Soldout</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/main/Restal">Restal</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/main/HistoryRestal">Historique-Restal</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/main/soldoutFood">Soldout-Food</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/main/logout">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+  {% elif serveur %}
+  <a class="navbar-brand" href="/main/sqrt(Cdf)">Telekss</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon" ></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="/Accueil">Accueil</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/main/Client">Bucquage</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/main/History">Historique</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/main/soldout">Soldout</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/main/logout">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+{% elif zibar %}
+<a class="navbar-brand" href="/main/sqrt(Cdf)">Telekss</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon" ></span>
+</button>
+
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="/Accueil">Accueil</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/main/Zibar">ZiBar</a>
+    </li>
+
+
+    <li class="nav-item">
+      <a class="nav-link" href="/main/History">Historique</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/main/soldout">Soldout</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/main/logout">Logout</a>
+    </li>
+  </ul>
+</div>
+</nav>
+
+  {% endif %}
+  {% endblock %}
+
 <nav class="navbar navbar-light bg-light border-top">
   <span class="navbar-brand mb-0 h1">Liste des produits en rupture de stock</span>
 </nav>
