@@ -177,13 +177,12 @@
       {% for id,date,salle,drink,quantity,status in operation %}
       {% csrf_token %}
       {% if CDF %}
-      {% if status == 'Vente' %}
       <tr>
         <td>
           {{date}}
         </td>
         <td>
-          Vente
+          {{status}}
         </td>
         <td>
           {{salle}}
@@ -195,26 +194,6 @@
           {{quantity}}
         </td>
       </tr>
-      {% elif status == 'Rechargée' %}
-      <tr>
-        <td>
-          {{date}}
-        </td>
-        <td>
-          Recharge
-        </td>
-        <td>
-          {{salle}}
-        </td>
-        <td>
-          {{drink}}
-        </td>
-        <td>
-          {{quantity}}
-        </td>
-      </tr>
-
-      {% endif %}
       {% else %}
       {% if status == 'Vente' %}
       <tr>

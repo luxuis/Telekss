@@ -182,15 +182,113 @@
   {% endif %}
   {% endblock %}
 
+    {% if serveur %}
     <nav class="navbar navbar-light bg-light border-top">
-      <span class="navbar-brand mb-0 h1">Accueil</span>
+      <span class="navbar-brand mb-0 h1">Accueil et Explications</span>
     </nav>
-    <p> Bienvenue sur l'interface de bucquage 4.0 des Telek'ss. Ce site te permet de bucquer les Consommation que tu vends! <strong>N'oublie pas de les bucquées!</strong></p>
-    <p> Si tu bucque bien toutes les consos, le niveau des stocks sera connu en permanence par les Zibars qui, avec leur interface personnalisé pourrons apporter les boissons manquantes
-      <strong>avant meme qu'il n'y en ai plus !!</strong>
-    </p>
+    <h3 ><center><font size="5">Bienvenue sur l'interface 4.0 des Telek'ss <strong>{{user}}</strong> ! </font></center></h3>
 
-    <p> Depuis le menu tu peux aller sur l'onglet "Client" qui te permet de bucqué tes consos. Tu t'es trompé ? tu as mal bucqué une conso ? <strong> Pas de Panique!</strong>
-      L'onglet Historique est fait pour toi! Dans cet onglet tu as la possiblité d'Annuler des bucquages précédents!
+    <p> <center><font size="5"><strong>Présentation des onglets</strong></font> </center></p>
+    <p> <font size="5"><strong>Accueil</strong></font></p>
+    <p> Onglet sur lequel tu tombes à chaque connexion, il te présente les différentes pages du site et des explications sur leur utilisation.
+      <strong>N'hésites pas à revenir dessus si tu as un doute.</strong>
     </p>
+    <p> <font size="5"><strong>Bucquage</strong></font></p>
+    <p> Onglet le plus important pour toi, il te permet de bucquer tout ce que tu vends. Le menu déroulant associé à chaque boisson te permet de choisir la quantité.
+      <strong>N'oublies pas de cliquer sur "Accepter" pour finaliser la vente.</strong>
+      Le petit message "Attention plus disponible en Zibar" indique qu'il y a rupture de stock en <strong> RESERVE ZIBAR. </strong>
+      Si tu as fait une erreur, pas de panique, tu peux annuler les bucquages erronés sur l'onglet <strong> Historique.</strong>
+    </p>
+    <p> <font size="5"><strong>Historique</strong></font></p>
+    <p> Il permet de visionner toutes les ventes effectuées.
+      <strong>Tu peux aussi annuler des bucquages erronés.</strong>
+    </p>
+    <p> <font size="5"><strong>Soldout</strong></font></p>
+    <p> Liste des produits en rupture de stock <strong> en RESERVE ZIBAR. </strong>
+    </p>
+    <p> <font size="5"><strong>Log out</strong></font></p>
+    <p> Se déconnecter pour les <strong> HM DREAM TEAM</strong> a la cote du phy's.
+      </p>
+      A 13-119 poür des textes mill pinés
+
+    {% elif zibar %}
+    <nav class="navbar navbar-light bg-light border-top">
+      <span class="navbar-brand mb-0 h1">Accueil et Explications</span>
+    </nav>
+    <h3 ><center><font size="5">Bienvenue sur l'interface 4.0 des Telek'ss <strong>{{user}}</strong> ! </font></center></h3>
+
+    <p> <center><font size="5"><strong>Présentation des onglets</strong></font> </center></p>
+    <p> <font size="5"><strong>Accueil</strong></font></p>
+    <p> Onglet sur lequel tu tombes à chaque connexion, il te présente les différentes pages du site et des explications sur leur utilisation.
+      <strong>N'hésites pas à revenir dessus si tu as un doute.</strong>
+    </p>
+    <p> <font size="5"><strong>Zibar</strong></font></p>
+    <p> Onglet le plus important pour toi, les demandes de réapprovisionnement apparaissent (refresh toutes les 15 secondes). Tu choisis la quantité que tu vas amener et tu clique sur "Accepter".
+        En cas d'erreur, tu peux annuler la recharge dans l'onglet <strong> Historique.</strong>
+      <strong>ATTENTION Le bouton "Annuler" passe la boisson en rupture de stock.</strong> En cas de fausse manip, tu peux <strong>annuler la rupture de stock en page "Soldout"</strong>
+      Une fois la livraison effectuée, n'oublies pas de cliquer sur "Terminer".
+    </p>
+    <p> <font size="5"><strong>Historique</strong></font></p>
+    <p> Il permet de visionner toutes les recharges effectuées.
+      <strong>Tu peux annuler des recharges erronées.</strong>
+    </p>
+    <p> <font size="5"><strong>Soldout</strong></font></p>
+    <p> Liste des produits en rupture de stock <strong> en RESERVE ZIBAR. </strong>
+      <strong>Tu peux annuler les ruptures de stock erronées.</strong>
+    </p>
+    <p> <font size="5"><strong>Logout</strong></font></p>
+    <p> Se déconnecter pour les <strong> HM DREAM TEAM</strong> a la cote du phy's.
+      </p>
+      A 13-119 poür des textes mill pinés
+
+    {% elif CDF%}
+    <nav class="navbar navbar-light bg-light border-top">
+      <span class="navbar-brand mb-0 h1">Accueil et Explications</span>
+    </nav>
+    <h3 ><center><font size="5">Bienvenue sur l'interface 4.0 des Telek'ss <strong>{{user}}</strong> ! </font></center></h3>
+
+    <p> <center><font size="5"><strong>Présentation des onglets</strong></font> </center></p>
+    <p> <font size="5"><strong>Accueil</strong></font></p>
+    <p> Onglet sur lequel tu tombes à chaque connexion, il te présente les différentes pages du site et des explications sur leur utilisation.
+      <strong>N'hésites pas à revenir dessus si tu as un doute.</strong>
+    </p>
+    <p> <font size="5"><strong>Zibar</strong></font></p>
+    <p> Page de demande de réapprovisionnement Zibar </p>
+    <p> <font size="5"><strong>Bucquage</strong></font></p>
+    <p> Page de bucquage des consos. Vous pouvez changez de salle à l'aide du menu déroulant en bas de page <strong> Penses à cliquer sur "Confirmer" </strong></p>
+    <p> <font size="5"><strong>Historique</strong></font></p>
+    <p> Il permet de visionner toutes les actions (ventes et recharges) effectuées.</p>
+    <p> <font size="5"><strong>Soldout</strong></font></p>
+    <p> Liste des produits en rupture de stock <strong> en RESERVE ZIBAR. </strong></p>
+    <p> <font size="5"><strong>Restal</strong></font></p>
+    <p> Les commandes arrivent(refresh toute les 15 secondes), elles passent en préparation puis en livraison.</p>
+    <p> <font size="5"><strong>Historique-Restal</strong></font></p>
+    <p> Historique des commandes <strong>restal</strong></p>
+    <p> <font size="5"><strong>Soldout-Food</strong></font></p>
+    <p> Liste des déguel's <strong> en rupture de stock. </strong></p>
+    <p> <font size="5"><strong>Logout</strong></font></p>
+    <p> Se déconnecter pour les <strong> HM DREAM TEAM</strong> a la cote du phy's.
+      </p>
+      A 13-119 poür des textes mill pinés
+    {% elif restal%}
+    <nav class="navbar navbar-light bg-light border-top">
+      <span class="navbar-brand mb-0 h1">Accueil et Explications</span>
+    </nav>
+    <h3 ><center><font size="5">Bienvenue sur l'interface 4.0 des Telek'ss <strong>{{user}}</strong> ! </font></center></h3>
+
+    <p> <center><font size="5"><strong>Présentation des onglets</strong></font> </center></p>
+    <p> <font size="5"><strong>Accueil</strong></font></p>
+    <p> Onglet sur lequel tu tombes à chaque connexion, il te présente les différentes pages du site et des explications sur leur utilisation.
+    <strong>N'hésites pas à revenir dessus si tu as un doute.</strong>
+    </p>
+    <p> <font size="5"><strong>Restal</strong></font></p>
+          <p> Les commandes arrivent(refresh toute les 15 secondes), elles passent en préparation puis en livraison.</p>
+    <p> <font size="5"><strong>Historique-Restal</strong></font></p>
+    <p> Historique des commandes <strong>restal</strong></p>
+          <p> <font size="5"><strong>Soldout-Food</strong></font></p>
+    <p> Liste des déguel's <strong> en rupture de stock. </strong></p>
+    <p> <font size="5"><strong>Logout</strong></font></p>
+          <p> Se déconnecter pour les <strong> HM DREAM TEAM</strong> a la cote du phy's.</p>
+        A 13-119 poür des textes mill pinés
+    {% endif %}
 {% endblock %}
