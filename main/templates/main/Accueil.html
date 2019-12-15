@@ -179,6 +179,40 @@
   </ul>
 </div>
 </nav>
+{% elif Grèce %}
+<a class="navbar-brand" href="/main/sqrt(Cdf)">Telekss</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon" ></span>
+</button>
+
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="/Accueil">Accueil</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/main/Client">Bucquage</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/main/History">Historique</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/main/soldout">Soldout</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/main/soldoutFood">Soldout-Food</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/main/logout">Logout</a>
+    </li>
+  </ul>
+</div>
+</nav>
   {% endif %}
   {% endblock %}
 
@@ -290,5 +324,34 @@
     <p> <font size="5"><strong>Logout</strong></font></p>
           <p> Se déconnecter pour les <strong> HM DREAM TEAM</strong> a la cote du phy's.</p>
         A 13-119 poür des textes mill pinés
+        {% elif Grèce %}
+            <nav class="navbar navbar-light bg-light border-top">
+            <span class="navbar-brand mb-0 h1">Accueil et Explications</span>
+            </nav>
+            <h3 ><center><font size="5">Bienvenue sur l'interface 4.0 des Telek'ss <strong>{{user}}</strong> ! </font></center></h3>
+            <p> <center><font size="5"><strong>Présentation des onglets</strong></font> </center></p>
+            <p> <font size="5"><strong>Accueil</strong></font></p>
+            <p> Onglet sur lequel tu tombes à chaque connexion, il te présente les différentes pages du site et des explications sur leur utilisation.
+            <strong>N'hésites pas à revenir dessus si tu as un doute.</strong>
+            </p>
+            <p> <font size="5"><strong>Bucquage</strong></font></p>
+            <p> Onglet le plus important pour toi, il te permet de bucquer tout ce que tu vends. Le menu déroulant associé à chaque boisson te permet de choisir la quantité.
+                    <strong>N'oublies pas de cliquer sur "Accepter" pour finaliser la vente.</strong>
+                    Le petit message "Attention plus disponible en Zibar" indique qu'il y a rupture de stock en <strong> RESERVE ZIBAR. </strong>
+                    Si tu as fait une erreur, pas de panique, tu peux annuler les bucquages erronés sur l'onglet <strong> Historique.</strong>
+                  </p>
+                  <p> <font size="5"><strong>Historique</strong></font></p>
+                  <p> Il permet de visionner toutes les ventes effectuées.
+                    <strong>Tu peux aussi annuler des bucquages erronés.</strong>
+                  </p>
+                  <p> <font size="5"><strong>Soldout</strong></font></p>
+                  <p> Liste des produits en rupture de stock <strong> en RESERVE ZIBAR. </strong>
+                  </p>
+                  <p> <font size="5"><strong>Soldout-Food</strong></font></p>
+            <p> Liste des déguel's <strong> en rupture de stock. </strong></p>
+                  <p> <font size="5"><strong>Log out</strong></font></p>
+                  <p> Se déconnecter pour les <strong> HM DREAM TEAM</strong> a la cote du phy's.
+                    </p>
+                    A 13-119 poür des textes mill pinés
     {% endif %}
 {% endblock %}

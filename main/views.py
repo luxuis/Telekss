@@ -62,6 +62,20 @@ def test_Restal(user):
         return True
     return False
 
+def test_soldoutFood(user):
+    for group in user.groups.all():
+        if group.name == "Serveur Salle Grèce":
+            return True
+        if group.name =="Réserve Zibar":
+            return True
+        if group.name == "CDF":
+            return True
+        if group.name == "Restal":
+            return True
+    if user.is_staff :
+        return True
+    return False
+
 def test_soldout(user):
     for group in user.groups.all():
         if group.name in ["Serveur Salle Aztèque","Serveur Salle Nordique","Serveur Salle Grèce","Serveur Salle Egypte"]:
@@ -85,8 +99,10 @@ def logoutSuccess(request):
 def Fdp(request):
     user=request.user
     for group in user.groups.all():
-        if group.name in ["Serveur Salle Aztèque","Serveur Salle Nordique","Serveur Salle Grèce","Serveur Salle Egypte"]:
+        if group.name in ["Serveur Salle Aztèque","Serveur Salle Nordique","Serveur Salle Egypte"]:
             serveur=True
+        elif group.name == "Serveur Salle Grèce":
+            Grèce=True
         if group.name == "Restal":
             restal=True
         if group.name =="Réserve Zibar":
@@ -151,8 +167,10 @@ def Zibar(request):
 def Accueil(request):
     user=request.user
     for group in user.groups.all():
-        if group.name in ["Serveur Salle Aztèque","Serveur Salle Nordique","Serveur Salle Grèce","Serveur Salle Egypte"]:
+        if group.name in ["Serveur Salle Aztèque","Serveur Salle Nordique","Serveur Salle Egypte"]:
             serveur=True
+        elif group.name == "Serveur Salle Grèce":
+            Grèce=True
         elif group.name == "Restal":
             restal=True
         elif group.name =="Réserve Zibar":
@@ -167,8 +185,10 @@ def Accueil(request):
 def sqrtcdf(request):
     user=request.user
     for group in user.groups.all():
-        if group.name in ["Serveur Salle Aztèque","Serveur Salle Nordique","Serveur Salle Grèce","Serveur Salle Egypte"]:
+        if group.name in ["Serveur Salle Aztèque","Serveur Salle Nordique","Serveur Salle Egypte"]:
             serveur=True
+        elif group.name == "Serveur Salle Grèce":
+            Grèce=True
         elif group.name == "Restal":
             restal=True
         elif group.name =="Réserve Zibar":
@@ -198,6 +218,8 @@ def Client(request):
 
         if group.name == "Serveur Salle Grèce":
             salle = "Grèce"
+            Grèce=True
+            serveur=False
 
         if group.name == "Serveur Salle Egypte":
             salle = "Egypte"
@@ -277,7 +299,7 @@ def History(request):
 
         if group.name == "Serveur Salle Grèce":
             roomuser = "Grèce"
-            serveur=True
+            Grèce=True
 
         if group.name == "Serveur Salle Egypte":
             roomuser = "Egypte"
@@ -311,9 +333,10 @@ def History(request):
         Recharge.set_cancelled(True)
         drinkName,roomName,quantitynb=Recharge.drink,Recharge.room,Recharge.quantity
         drinkId = dk.objects.filter(name = drinkName)[0].id
+        Containersize=dk.objects.filter(name = drinkName)[0].container_size
         roomId = rooms.objects.filter(name = roomName)[0].id
         st=stocks.objects.filter(drinks = drinkId,room = roomId)[0]
-        st.drainZibar(int(quantitynb))
+        st.drainZibar(int(quantitynb*Containersize))
         st.set_accepter(False)
 
     if user.is_staff or groupe == "CDF":
@@ -365,7 +388,7 @@ def Soldout(request):
 
         if group.name == "Serveur Salle Grèce":
             roomuser = "Grèce"
-            serveur=True
+            Grèce=True
 
         if group.name == "Serveur Salle Egypte":
             roomuser = "Egypte"
@@ -496,7 +519,7 @@ def HistoryRestal(request):
     return render(request, 'main/HistoryRestal.html',locals())
 
 @login_required(redirect_field_name='', login_url='/logout')
-@user_passes_test(test_Restal, login_url='/Fdp')
+@user_passes_test(test_soldoutFood, login_url='/Fdp')
 def SoldoutFood(request):
     restal=True
     user=request.user
@@ -504,12 +527,14 @@ def SoldoutFood(request):
         if group.name == "CDF":
             CDF=True
             restal=False
+        elif group.name == "Serveur Salle Grèce":
+            restal=False
+            Grèce=True
     if user.is_staff:
         staff=True
         restal=False
     foodsold=food.objects.filter(is_soldout=True)
     btnAnnuler = request.POST.get('Annuler')
-    Cuist=test_Restal(request.user)
     if btnAnnuler != None:
         food.objects.filter(name=btnAnnuler)[0].set_soldout(False)
     return render(request,'main/soldoutFood.html',locals( ))
