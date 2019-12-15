@@ -25,7 +25,7 @@ SECRET_KEY = 'roq2oqz)n0xkefq=a81kl%^b&cgb@1@g5y*0%g8sj2xp1b89l)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".teleks.alwaysdata.net","www.teleks.alwaysdata.net"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -78,11 +78,8 @@ WSGI_APPLICATION = 'Telekss.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'teleks_db',
-        'HOST': 'mysql-teleks.alwaysdata.net',
-        'USER': 'teleks',
-        'PASSWORD': 'Z3BmEGM5Gmn3RhW',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -123,6 +120,4 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = 'static/'
-
-STATIC_ROOT = '/www/Telekss/static/'
+STATIC_URL = '/static/'
