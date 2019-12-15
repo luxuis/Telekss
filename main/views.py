@@ -408,7 +408,8 @@ def Restal(request):
     btnAnnuler = request.POST.get('Annuler')
     if btnAnnuler != None:
         foodname, roomName = btnAnnuler.split(',')
-        demandeFood.objects.filter(food__name = foodname,room__name = roomName)[0].delete()
+        demandeFood.objects.filter(food__name = foodname,room__name = roomName).delete()
+        food.objects.filter(name = foodname)[0].set_soldout(True)
 
     btnAccepter = request.POST.get('Accepter')
     if btnAccepter != None:
@@ -454,13 +455,13 @@ def Restal(request):
                 break
             i += 1
 
-    for food in demandeFood.objects.all():
-        if food.is_en_preparation  and not(food.is_en_livraison) and not(food.is_livre):
-            preparation.append((food.room.name,food.food.name))
-        elif food.is_en_livraison and not(food.is_livre):
-            livraison.append((food.room.name,food.food.name))
-        elif not(food.is_livre):
-            demande.append((food.room.name,food.food.name))
+    for foods in demandeFood.objects.all():
+        if foods.is_en_preparation  and not(foods.is_en_livraison) and not(foods.is_livre):
+            preparation.append((foods.room.name,foods.food.name))
+        elif foods.is_en_livraison and not(foods.is_livre):
+            livraison.append((foods.room.name,foods.food.name))
+        elif not(foods.is_livre):
+            demande.append((foods.room.name,foods.food.name))
 
     return render(request, 'main/Restal.html', locals())
 

@@ -173,7 +173,7 @@
 
       </tbody>
     </table>
-    <div class="col-md-12 text-center">
+    <div class="col-md-12 text-center mb-2">
       <button type="submit" class="btn btn-success btn-block" name=Accepter > Accepter </button>
     </div>
     </form>
@@ -214,35 +214,40 @@
             {% endfor %}
       </tbody>
     </table>
-    <div class="col-md-12 text-center">
+    <div class="col-md-12 text-center mb-2">
       <button type="submit" class="btn btn-success btn-block" name=Accepterf > Accepter </button>
     </div>
     </form>
 
     {% if staff or CDF%}
     <form action="Client" method="POST">
-    <tbody>
+    <table class="table table-hover shadow p-3 mb-3 bg-white rounded">
+    <thead>
 
 
         {% csrf_token %}
           <tr>
-            <td>Choix de la salle</td>
-            <td>
+            <th>Choix de la salle</th>
+            <th>
               <select name="Room">
                 {% for i in sallelist%}
                   <option value={{i}}>{{i}}</option>
                 {% endfor %}
               </select>
-            </td>
+            </th>
           </tr>
 
 
+    </thead>
+    <tbody>
+
     </tbody>
   </table>
-  <div class="col-md-12 text-center">
+</form>
+  <div class="col-md-12 text-center mt-2">
     <button type="submit" class="btn btn-success btn-block" name=Confirmer > Confirmer </button>
   </div>
-  </form>
+
   {% endif %}
   </body>
 </html>
