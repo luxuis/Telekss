@@ -100,18 +100,18 @@ class stocks(models.Model):
 
     def drain(self,value,is_sale):
         self.quantity -= value
+        self.save()
         h = history(drink = self.drinks,room = self.room, quantity = value, is_sale = is_sale)
         h.save()
-        self.save()
         return None
 
     def set_conso(self,value):
-        self.quantity += value
+        self.consommation += value
         self.save()
         return None
 
     def cancel_conso(self,value):
-        self.quantity -= value
+        self.consommation -= value
         self.save()
         return None
 
