@@ -81,7 +81,7 @@ def logoutView(request):
 def logoutSuccess(request):
     return render(request,'main/logoutSuccess.html',locals())
 
-@login_required
+@login_required(redirect_field_name='', login_url='/logout')
 def Fdp(request):
     user=request.user
     for group in user.groups.all():
@@ -97,7 +97,7 @@ def Fdp(request):
         staff=True
     return render(request,'main/Fdp.html',locals())
 
-@login_required
+@login_required(redirect_field_name='', login_url='/logout')
 @user_passes_test(test_Zibar, login_url='/Fdp')
 def Zibar(request):
     zibar=True
@@ -147,7 +147,7 @@ def Zibar(request):
             demande.append((drink.room.name,drink.drinks.name))
     return render(request, 'main/Zibar.html', locals())
 
-@login_required
+@login_required(redirect_field_name='', login_url='/logout')
 def Accueil(request):
     user=request.user
     for group in user.groups.all():
@@ -163,7 +163,7 @@ def Accueil(request):
         staff=True
     return render(request,'main/Accueil.html',locals())
 
-@login_required
+@login_required(redirect_field_name='', login_url='/logout')
 def sqrtcdf(request):
     user=request.user
     for group in user.groups.all():
@@ -182,7 +182,7 @@ def sqrtcdf(request):
     sqrt = Nums[ind]
     return render(request,'main/sqrt(Cdf).html',locals())
 
-@login_required
+@login_required(redirect_field_name='', login_url='/logout')
 @user_passes_test(test_Serveur, login_url='/Fdp')
 def Client(request):
     user=request.user
@@ -261,7 +261,7 @@ def Client(request):
                         demandeFood.save(demandeFood(food = degeulname,room = room))
     return render(request,'main/Client.html',locals())
 
-@login_required
+@login_required(redirect_field_name='', login_url='/logout')
 @user_passes_test(test_history, login_url='/Fdp')
 def History(request):
     user=request.user
@@ -349,7 +349,7 @@ def History(request):
     operation=operation[:30]
     return render(request, 'main/History.html',locals())
 
-@login_required
+@login_required(redirect_field_name='', login_url='/logout')
 @user_passes_test(test_soldout, login_url='/Fdp')
 def Soldout(request):
     user=request.user
@@ -388,7 +388,7 @@ def Soldout(request):
     return render(request,'main/soldout.html',locals( ))
 
 
-@login_required
+@login_required(redirect_field_name='', login_url='/logout')
 @user_passes_test(test_Restal, login_url='/Fdp')
 def Restal(request):
     user=request.user
@@ -408,7 +408,8 @@ def Restal(request):
     btnAnnuler = request.POST.get('Annuler')
     if btnAnnuler != None:
         foodname, roomName = btnAnnuler.split(',')
-        demandeFood.objects.filter(food__name = foodname,room__name = roomName)[0].delete()
+        demandeFood.objects.filter(food__name = foodname,room__name = roomName).delete()
+        food.objects.filter(name = foodname)[0].set_soldout(True)
 
     btnAccepter = request.POST.get('Accepter')
     if btnAccepter != None:
@@ -454,17 +455,17 @@ def Restal(request):
                 break
             i += 1
 
-    for food in demandeFood.objects.all():
-        if food.is_en_preparation  and not(food.is_en_livraison) and not(food.is_livre):
-            preparation.append((food.room.name,food.food.name))
-        elif food.is_en_livraison and not(food.is_livre):
-            livraison.append((food.room.name,food.food.name))
-        elif not(food.is_livre):
-            demande.append((food.room.name,food.food.name))
+    for foods in demandeFood.objects.all():
+        if foods.is_en_preparation  and not(foods.is_en_livraison) and not(foods.is_livre):
+            preparation.append((foods.room.name,foods.food.name))
+        elif foods.is_en_livraison and not(foods.is_livre):
+            livraison.append((foods.room.name,foods.food.name))
+        elif not(foods.is_livre):
+            demande.append((foods.room.name,foods.food.name))
 
     return render(request, 'main/Restal.html', locals())
 
-@login_required
+@login_required(redirect_field_name='', login_url='/logout')
 @user_passes_test(test_Restal, login_url='/Fdp')
 def HistoryRestal(request):
     user=request.user
@@ -494,7 +495,7 @@ def HistoryRestal(request):
     operation=operation[:30]
     return render(request, 'main/HistoryRestal.html',locals())
 
-@login_required
+@login_required(redirect_field_name='', login_url='/logout')
 @user_passes_test(test_Restal, login_url='/Fdp')
 def SoldoutFood(request):
     restal=True
