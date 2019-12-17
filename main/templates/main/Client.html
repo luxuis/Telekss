@@ -34,55 +34,14 @@
         <li class="nav-item">
           <a class="nav-link" href="/main/soldout">Soldout</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/main/Restal">Restal</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/main/HistoryRestal">Historique-Restal</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/main/soldoutFood">Soldout-Food</a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="/main/logout">Logout</a>
         </li>
       </ul>
     </div>
   </nav>
-  {% elif Grèce %}
-<a class="navbar-brand" href="/main/sqrt(Cdf)">Telekss</a>
-<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-  <span class="navbar-toggler-icon" ></span>
-</button>
 
-<div class="collapse navbar-collapse" id="navbarNav">
-  <ul class="navbar-nav">
-    <li class="nav-item active">
-      <a class="nav-link" href="/Accueil">Accueil</a>
-    </li>
-
-    <li class="nav-item">
-      <a class="nav-link" href="/main/Client">Bucquage</a>
-    </li>
-
-    <li class="nav-item">
-      <a class="nav-link" href="/main/History">Historique</a>
-    </li>
-
-    <li class="nav-item">
-      <a class="nav-link" href="/main/soldout">Soldout</a>
-    </li>
-
-    <li class="nav-item">
-      <a class="nav-link" href="/main/soldoutFood">Soldout-Food</a>
-    </li>
-
-    <li class="nav-item">
-      <a class="nav-link" href="/main/logout">Logout</a>
-    </li>
-  </ul>
-</div>
-</nav>
   {% elif CDF %}
   <a class="navbar-brand" href="/main/sqrt(Cdf)">Telekss</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,15 +68,7 @@
       <li class="nav-item">
         <a class="nav-link" href="/main/soldout">Soldout</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/main/Restal">Restal</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/main/HistoryRestal">Historique-Restal</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/main/soldoutFood">Soldout-Food</a>
-      </li>
+
       <li class="nav-item">
         <a class="nav-link" href="/main/logout">Logout</a>
       </li>
@@ -207,54 +158,8 @@
 
       </tbody>
     </table>
-    {% if Grèce or staff or CDF %}
-    <div class="col-md-12 text-center mb-2">
-      <button type="submit" class="btn btn-success btn-block" name=Accepter > Accepter </button>
-    </div>
-    </form>
 
-    <table class="table table-hover shadow p-3 mb-3 bg-white rounded">
-      <thead>
-        <tr>
-          <th scope="col">Degeul'ss</th>
-          <th scope="col">Quantité</th>
-        </tr>
-      </thead>
-      <form action="Client" method="POST">
-      <tbody>
 
-          {% for food in fd %}
-          {% csrf_token %}
-            <tr>
-              {% if food in foodsoldout %}
-              <td>{{food}} <strong>Attention plus disponible a la Restal</strong></td>
-              <td>
-                <select name="qtef,{{food}}">
-                  {% for i in rang %}
-                    <option value={{i}},{{food}}>{{i}}</option>
-                  {% endfor %}
-                </select>
-              </td>
-              {% else %}
-              <td>{{food}}</td>
-              <td>
-                <select name="qtef,{{food}}">
-                  {% for i in rang %}
-                    <option value={{i}},{{food}}>{{i}}</option>
-                  {% endfor %}
-                </select>
-              </td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-      </tbody>
-    </table>
-    <div class="col-md-12 text-center mb-2">
-      <button type="submit" class="btn btn-success btn-block" name=Accepterf > Accepter </button>
-    </div>
-    </form>
-    {% endif %}
-    
     {% if staff or CDF%}
     <form action="Client" method="POST">
     <table class="table table-hover shadow p-3 mb-3 bg-white rounded">

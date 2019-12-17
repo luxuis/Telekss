@@ -1,21 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-class food(models.Model):
-    name = models.CharField(max_length = 100)
-    is_soldout = models.BooleanField(default=False)
-
-    class Meta:
-        verbose_name = "food"
-        ordering = ['name']
-
-    def __str__(self):
-        return self.name
-
-    def set_soldout(self,bool):
-        self.is_soldout = bool
-        self.save()
-        return None
 
 class drinks(models.Model):
     name = models.CharField(max_length = 50)
@@ -49,35 +34,6 @@ class rooms(models.Model):
     def __str__(self):
         return self.name
 
-class demandeFood(models.Model):
-    food = models.ForeignKey(food, on_delete = models.CASCADE)
-    room = models.ForeignKey(rooms, on_delete = models.CASCADE)
-    date = models.DateTimeField(default=timezone.now)
-    is_en_preparation = models.BooleanField(default=False)
-    is_en_livraison = models.BooleanField(default=False)
-    is_livre = models.BooleanField(default=False)
-
-    class Meta:
-        verbose_name = "demande de degeul'ss"
-        ordering = ['room','food']
-
-    def __str__(self):
-        return self.food.name + self.room.name
-
-    def set_preparation(self,bool):
-        self.is_en_preparation = bool
-        self.save()
-        return None
-
-    def set_livraison(self,bool):
-        self.is_en_livraison = bool
-        self.save()
-        return None
-
-    def set_livre(self,bool):
-        self.is_livre = bool
-        self.save()
-        return None
 
 class stocks(models.Model):
     drinks = models.ForeignKey(drinks, on_delete = models.CASCADE)
