@@ -201,6 +201,7 @@ def Client(request):
         sallelist=["Nordique","Egypte","Grèce","Aztèque"]
 
         Newsalle=request.POST.get('Room')
+        print(Newsalle)
         if Newsalle != None:
             salle=Newsalle
 
@@ -209,6 +210,7 @@ def Client(request):
     rang = {0,1,2,3,4,5,6,7,8,9}
     drinksoldout=[]
     for drink in stocks.objects.all():
+        print(stocks.objects.all())
         if drink.room.name == salle:
             drinkName=drink.drinks.name
             drinks.append(drinkName)
@@ -225,7 +227,7 @@ def Client(request):
                     st=stocks.objects.filter(drinks = drinkId,room = roomId)[0]
                     st.drain(int(qte),True)
                     st.set_conso(int(qte))
-        return render(request,'main/Client.html',locals())
+    return render(request,'main/Client.html',locals())
 
 @login_required(redirect_field_name='', login_url='/logout')
 @user_passes_test(test_history, login_url='/Fdp')

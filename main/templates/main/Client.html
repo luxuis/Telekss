@@ -158,7 +158,10 @@
 
       </tbody>
     </table>
-
+    <div class="col-md-12 text-center mb-2">
+          <button type="submit" class="btn btn-success btn-block" name=Accepter > Accepter </button>
+        </div>
+        </form>
 
     {% if staff or CDF%}
     <form action="Client" method="POST">
@@ -184,10 +187,11 @@
 
     </tbody>
   </table>
-</form>
   <div class="col-md-12 text-center mt-2">
     <button type="submit" class="btn btn-success btn-block" name=Confirmer > Confirmer </button>
   </div>
+</form>
+
 
   {% endif %}
   </body>
