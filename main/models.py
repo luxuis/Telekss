@@ -110,3 +110,20 @@ class history(models.Model):
         self.is_cancelled = bool
         self.save()
         return None
+
+class VenteSum(models.Model):
+    drink = models.ForeignKey(drinks, on_delete = models.CASCADE)
+    room = models.ForeignKey(rooms, on_delete = models.CASCADE)
+    quantitySum = models.IntegerField()
+    date = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = "VenteSum"
+        ordering = ['room','drink','-date']
+
+    def __str__(self):
+        return str(self.room)+' '+str(self.drinks)+' '+str(self.quantitySum)
+
+    def cancel_sum(self,quantity):
+        self.quantitySum-=quantity
+        self.save()

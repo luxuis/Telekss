@@ -1,11 +1,13 @@
 from django.shortcuts import render
 import random
-from .models import stocks, rooms, history
+from .models import stocks, rooms, history, VenteSum
 from .models import drinks as dk
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate,logout
 import numpy as np
+from chartit import DataPool, Chart
+from django.utils import timezone
 
 def test_Serveur(user):
     for group in user.groups.all():
@@ -201,7 +203,7 @@ def Client(request):
         sallelist=["Nordique","Egypte","Grèce","Aztèque"]
 
         Newsalle=request.POST.get('Room')
-        print(Newsalle)
+
         if Newsalle != None:
             salle=Newsalle
 
@@ -210,7 +212,7 @@ def Client(request):
     rang = {0,1,2,3,4,5,6,7,8,9}
     drinksoldout=[]
     for drink in stocks.objects.all():
-        print(stocks.objects.all())
+
         if drink.room.name == salle:
             drinkName=drink.drinks.name
             drinks.append(drinkName)
@@ -224,9 +226,14 @@ def Client(request):
                 drinkId = dk.objects.filter(name = drinkName)[0].id
                 roomId = rooms.objects.filter(name = salle)[0].id
                 if int(qte) != 0:
-                    st=stocks.objects.filter(drinks = drinkId,room = roomId)[0]
+                    st=stocks.objects.filter(drinks = drinkId , room = roomId)[0]
                     st.drain(int(qte),True)
                     st.set_conso(int(qte))
+                    try:
+                        v=VenteSum(drink = drink.drinks , room = drink.room ,  quantitySum = int(qte)+VenteSum.objects.filter(drink = drink.drinks , room = drink.room)[0].quantitySum)
+                    except:
+                        v=VenteSum(drink = drink.drinks , room = drink.room ,  quantitySum = int(qte))
+                    v.save()
     return render(request,'main/Client.html',locals())
 
 @login_required(redirect_field_name='', login_url='/logout')
@@ -271,6 +278,7 @@ def History(request):
         roomId = rooms.objects.filter(name = roomName)[0].id
         stocks.objects.filter(drinks = drinkId,room = roomId)[0].refilClient(int(quantitynb))
         stocks.objects.filter(drinks = drinkId,room = roomId)[0].cancel_conso(int(quantitynb))
+        VenteSum.objects.filter(drink = drinkId, room = roomId)[0].cancel_sum(quantitynb)
 
     btnAnnulerZibar = request.POST.get('AnnulerZibar')
     if btnAnnulerZibar != None:
@@ -355,3 +363,23 @@ def Soldout(request):
     if btnAnnuler != None:
         dk.objects.filter(name=btnAnnuler)[0].set_soldout(False)
     return render(request,'main/soldout.html',locals( ))
+
+def sales(request):
+    salle='Nordique'
+    Newsalle=request.POST.get('Room')
+    if Newsalle != None:
+        salle=Newsalle
+#    boisson_list_name=stocks.objects.filter(room=salle).drink
+#    for boisson in boisson_list_name:
+    sales= \
+            DataPool(
+            series=[{'options':{'source': VenteSum.objects.filter(drink = dk.objects.filter(name = "Champagne")[0].id, room = rooms.objects.filter(name = salle)[0].id)},
+                    'terms':['date','quantitySum']}])
+    cht= Chart(
+                datasource=sales,
+                series_options=
+                    [{'options':{'type':'line'},
+                    'terms':{'date':['quantitySum']}}],
+                chart_options={'title':{'text':salle},
+                    'xAxis':{'title':{'text':'drinks'}}})
+    return render(request,'main/sales.html',{'chart_list': [cht]})

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import drinks,rooms,history,stocks
+from .models import drinks,rooms,history,stocks,VenteSum
 
 class stocksAdmin(admin.ModelAdmin):
     list_display   = ('drinks', 'room', 'quantity','is_accepter')
@@ -22,9 +22,13 @@ class roomsAdmin(admin.ModelAdmin):
     list_filter    = ('name','is_bar',)
     ordering       = ('name',)
 
+class VenteSumAdmin(admin.ModelAdmin):
+    list_display   = ('drink', 'room','quantitySum','date')
+    ordering       = ('date',)
 
 
 admin.site.register(drinks, drinksAdmin)
 admin.site.register(rooms, roomsAdmin)
 admin.site.register(history, historyAdmin)
 admin.site.register(stocks, stocksAdmin)
+admin.site.register(VenteSum, VenteSumAdmin)

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script
+  src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+
+  <script
+  src="https://code.highcharts.com/highcharts.src.js">
+  </script>
+
+{% load chartit %}
+{{ chart_list|load_charts:"cht" }}
+</head>
+<body>
+  <div id='cht'>
+  </div>
+</body>
+</html>
+
+<form action="sales" method="POST">
+<table class="table table-hover shadow p-3 mb-3 bg-white rounded">
+<thead>
+
+    {% csrf_token %}
+      <tr>
+        <th>Choix de la salle</th>
+        <th>
+          <select name="Room">
+            {% with "Nordique Egypte Grèce Aztèque" as list %}
+            {% for i in list.split %}
+              <option value={{i}}>{{i}}</option>
+            {% endfor %}
+            {% endwith %}
+          </select>
+        </th>
+      </tr>
+
+
+</thead>
+<tbody>
+
+</tbody>
+</table>
+<div class="col-md-12 text-center mt-2">
+<button type="submit" class="btn btn-success btn-block" name=Confirmer > Confirmer </button>
+</div>
+</form>
