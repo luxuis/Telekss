@@ -135,7 +135,17 @@
           {% csrf_token %}
             <tr>
               {% if drink in drinksoldout %}
-              <td>{{drink}} <strong>Attention plus disponible en Zibar</strong></td>
+              <td>
+                <div class="container">
+                  <div class="row">
+                    <div class="col-xm">{{drink}}</div>
+                    <div class="col-sm">
+                      <div class="alert alert-danger mt-0 mb-0 pt-0 pb-0" role="alert"> <strong>Attention plus disponible en Zibar</strong></div>
+                    </div>
+
+                  </div>
+                </div>
+              </td>
               <td>
                 <select name="qte,{{drink}}">
                   {% for i in rang %}
