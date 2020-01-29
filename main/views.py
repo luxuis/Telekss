@@ -369,11 +369,15 @@ def sales(request):
     Newsalle=request.POST.get('Room')
     if Newsalle != None:
         salle=Newsalle
+    Obj='Champagne'
+    NewObj=request.POST.get('Object')
+    if NewObj != None:
+        Obj=NewObj
 #    boisson_list_name=stocks.objects.filter(room=salle).drink
 #    for boisson in boisson_list_name:
     sales= \
             DataPool(
-            series=[{'options':{'source': VenteSum.objects.filter(drink = dk.objects.filter(name = "Champagne")[0].id, room = rooms.objects.filter(name = salle)[0].id)},
+            series=[{'options':{'source': VenteSum.objects.filter(drink = dk.objects.filter(name = Obj)[0].id, room = rooms.objects.filter(name = salle)[0].id)},
                     'terms':['date','quantitySum']}])
     cht= Chart(
                 datasource=sales,
@@ -381,5 +385,5 @@ def sales(request):
                     [{'options':{'type':'line'},
                     'terms':{'date':['quantitySum']}}],
                 chart_options={'title':{'text':salle},
-                    'xAxis':{'title':{'text':'drinks'}}})
+                    'xAxis':{'title':{'text':Obj}}})
     return render(request,'main/sales.html',{'chart_list': [cht]})
