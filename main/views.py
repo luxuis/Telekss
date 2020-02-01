@@ -68,6 +68,13 @@ def test_soldout(user):
         return True
     return False
 
+def test_sales(user):
+    for group in user.groups.all():
+        if group.name == "CDF":
+            return True
+    if user.is_staff :
+        return True
+
 def logoutView(request):
     logout(request)
     return render(request,'main/logoutSuccess.html',locals())
@@ -165,7 +172,7 @@ def sqrtcdf(request):
             CDF=True
     if user.is_staff:
         staff=True
-    Nums=[99,123,19,36,45,74,106,85,11,3,113,25,136,143,160,167,63,41,107,40,38,93,137,124,163,47,116,29,5,140,52,54,10,141,4,148,158,7,14,39,132,87,115,145,125,76,105,37,20,97,55,109,129,170,56,66,75,91,168,77,79,65,128,27,161,171,130,80,64,164,50,51,104,89,28,49,72,58,96,110,174,121,114,155,6,133,42,59,149,32,86,131,70,16,8,165,5,5,5,5,5,5,5,5,5,5,5,5,5,5,80,80,80,80,80,5,5,5,5,5,5,5,5,5,5,5,5,5,5,80,80,80,80,80,32,32,32,32,32,32,47,47,47,47,25,25,25,25,25,52,52,52,52,52,52,'117-172','48-159','95-157','100-118-147','35-90-110-158','22-61-67-111',70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,'15-18-101','5!-62','78-153','84-166','73-156','9-134','82-135','103-152','122-154','1-138','100-159','60-83','12-17','44-94','81g','4!-43-92','88-173','144-162','31-53','2-150','23-151','71-126','57-142','89-167','21-112','34-98','27-149','127-146','30-139','46-108','68bis','168bis','26#68']
+    Nums=[99,123,19,36,45,74,106,85,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,3,113,25,136,143,160,167,63,41,107,40,38,93,137,124,163,47,116,29,5,140,52,54,10,141,4,148,158,7,14,39,132,87,115,145,125,76,105,37,20,97,55,109,129,170,56,66,75,91,168,77,79,65,128,27,161,171,130,80,64,164,50,51,104,89,28,49,72,58,96,110,174,121,114,155,6,133,42,59,149,32,86,131,70,16,8,165,5,5,5,5,5,5,5,5,5,5,5,5,5,5,80,80,80,80,80,5,5,5,5,5,5,5,5,5,5,5,5,5,5,80,80,80,80,80,32,32,32,32,32,32,47,47,47,47,25,25,25,25,25,52,52,52,52,52,52,'117-172','48-159','95-157','100-118-147','35-90-110-158','22-61-67-111',70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,'15-18-101','5!-62','78-153','84-166','73-156','9-134','82-135','103-152','122-154','1-138','100-159','60-83','12-17','44-94','81g','4!-43-92','88-173','144-162','31-53','2-150','23-151','71-126','57-142','89-167','21-112','34-98','27-149','127-146','30-139','46-108','68bis','168bis','26#68',36,36,36]
     ind=random.randint(0,len(Nums)-1)
     sqrt = Nums[ind]
     return render(request,'main/sqrt(Cdf).html',locals())
@@ -364,26 +371,28 @@ def Soldout(request):
         dk.objects.filter(name=btnAnnuler)[0].set_soldout(False)
     return render(request,'main/soldout.html',locals( ))
 
+@login_required(redirect_field_name='', login_url='/logout')
+@user_passes_test(test_sales, login_url='/Fdp')
 def sales(request):
     salle='Nordique'
     Newsalle=request.POST.get('Room')
     if Newsalle != None:
         salle=Newsalle
-    Obj='Champagne'
-    NewObj=request.POST.get('Object')
-    if NewObj != None:
-        Obj=NewObj
-#    boisson_list_name=stocks.objects.filter(room=salle).drink
-#    for boisson in boisson_list_name:
+    drink='Champagne'
+    Newdrink=request.POST.get('Drinks')
+    if Newdrink != None:
+        drink=Newdrink
+
     sales= \
             DataPool(
-            series=[{'options':{'source': VenteSum.objects.filter(drink = dk.objects.filter(name = Obj)[0].id, room = rooms.objects.filter(name = salle)[0].id)},
+            series=[{'options':{'source': VenteSum.objects.filter(drink = dk.objects.filter(name = drink)[0].id, room = rooms.objects.filter(name = salle)[0].id)},
                     'terms':['date','quantitySum']}])
+    salle_drink=drink +'  '+ salle
     cht= Chart(
                 datasource=sales,
                 series_options=
                     [{'options':{'type':'line'},
                     'terms':{'date':['quantitySum']}}],
-                chart_options={'title':{'text':salle},
-                    'xAxis':{'title':{'text':Obj}}})
+                chart_options={'title':{'text':salle_drink},
+                    'xAxis':{'title':{'text': drink}}})
     return render(request,'main/sales.html',{'chart_list': [cht]})
